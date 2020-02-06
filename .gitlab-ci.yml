@@ -1,0 +1,69 @@
+# The main image
+image: restorit/docker-suite:1.0.4
+# The used services
+services:
+  - docker:18.09.7-dind
+# The different steps of CI
+stages:
+  - test
+  - build
+  - deployment
+##################
+# The test steps #
+##################
+test:
+  stage: test
+  before_script:
+    - cp .ci-cd/.env.testing .env
+    - cp .ci-cd/docker-compose.test.yml docker-compose.override.yml
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  script:
+    - docker-compose pull || echo "Images not found"
+    - docker-compose build
+    - docker-compose up -d
+    - docker-compose exec -T php bash .ci-cd/builds/php/test/test.sh
+    - docker-compose down
+    - docker-compose push
+###################
+# The build steps #
+###################
+build:
+  stage: build
+  allow_failure: false
+  when: manual
+  only:
+    - master
+  before_script:
+    - cp $ENV_FILE .env
+    - cp .ci-cd/docker-compose.prod.yml docker-compose.override.yml
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  script:
+    - docker-compose pull || echo "Images not found"
+    - docker-compose build
+    - docker-compose push
+########################
+# The deployment steps #
+########################
+deploy:
+  when: on_success
+  only:
+    - master
+  stage: deployment
+  allow_failure: true
+  variables:
+    DOCKER_TLS_VERIFY: "1"
+    DOCKER_HOST: "tcp://40.69.212.102:2376"
+    DOCKER_CERT_PATH: "certs"
+  before_script:
+    - mkdir $DOCKER_CERT_PATH
+    - echo "$CA" > $DOCKER_CERT_PATH/ca.pem
+    - echo "$CLIENT_CERT" > $DOCKER_CERT_PATH/cert.pem
+    - echo "$CLIENT_KEY" > $DOCKER_CERT_PATH/key.pem
+    - cp $ENV_FILE .env
+    - cp .ci-cd/docker-compose.prod.yml docker-compose.override.yml
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+  script:
+    - docker-compose pull
+    - docker-compose up -d
+  after_script:
+    - rm -rf $DOCKER_CERT_PATH

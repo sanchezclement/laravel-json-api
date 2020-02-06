@@ -1,0 +1,22 @@
+{
+    "name": "sancherie/laravel-json-api",
+    "description": "A JSON API wrapper for laravel",
+    "type": "metapackage",
+    "require": {
+        "laravel/framework": "6.0"
+    },
+    "authors": [
+        {
+            "name": "Clément SANCHEZ",
+            "email": "clement@sanchez.sh"
+        }
+    ],
+    "minimum-stability": "alpha",
+    "autoload": {
+        "classmap": [
+        ],
+        "psr-4": {
+            "JsonApi\\": "src/"
+        }
+    }
+}

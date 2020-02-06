@@ -1,0 +1,19 @@
+version: '3.4'
+services:
+  db:
+    image: registry.gitlab.com/restorit/api.restorit.fr/db:test
+    build:
+      context: .ci-cd/builds/db
+      cache_from:
+        - registry.gitlab.com/restorit/api.restorit.fr/db:test
+    volumes:
+      - db_test_data:/var/lib/mysql
+  php:
+    image: registry.gitlab.com/restorit/api.restorit.fr/php:test
+    build:
+      context: .
+      dockerfile: .ci-cd/builds/php/test/Dockerfile
+      cache_from:
+        - registry.gitlab.com/restorit/api.restorit.fr/php:test
+volumes:
+  db_test_data:

@@ -1,0 +1,18 @@
+version: '3.4'
+
+x-production: &production
+  restart: always
+
+services:
+  php:
+    <<: *production
+    image: registry.gitlab.com/restorit/api.restorit.fr/php:prod
+    build:
+      context: .
+      dockerfile: .ci-cd/builds/php/prod/Dockerfile
+      cache_from:
+        - registry.gitlab.com/restorit/api.restorit.fr/php:prod
+    volumes:
+      - static_data:/code/storage
+volumes:
+  static_data:

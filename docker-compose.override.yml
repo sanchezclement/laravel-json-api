@@ -1,0 +1,12 @@
+version: '3.4'
+services:
+  php:
+    image: registry.gitlab.com/restorit/api.restorit.fr/php:dev
+    build:
+      context: .
+      dockerfile: .ci-cd/builds/php/dev/Dockerfile
+      cache_from:
+        - registry.gitlab.com/restorit/api.restorit.fr/php:dev
+    volumes:
+      - .:/code
+    user: ${UID-0}:${GID-0}

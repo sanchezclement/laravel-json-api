@@ -1,0 +1,14 @@
+version: '3.4'
+
+x-environment: &environment
+  env_file: .env
+
+services:
+  php:
+    <<: *environment
+    networks:
+      - default
+volumes:
+  db_data:
+networks:
+  default:

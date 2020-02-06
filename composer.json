@@ -1,7 +1,7 @@
 {
     "name": "sancherie/laravel-json-api",
     "description": "A JSON API wrapper for laravel",
-    "version": "1.0.O",
+    "version": "1.0.0",
     "type": "metapackage",
     "license": ["MIT"],
     "require": {
@@ -19,5 +19,7 @@
         "psr-4": {
             "JsonApi\\": "src/"
         }
-    }
+    },
+    "prefer-stable": true,
+    "minimum-stability": "dev"
 }

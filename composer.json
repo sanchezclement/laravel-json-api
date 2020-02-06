@@ -13,7 +13,6 @@
             "email": "clement@sanchez.sh"
         }
     ],
-    "minimum-stability": "stable",
     "autoload": {
         "classmap": [
         ],

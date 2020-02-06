@@ -2,6 +2,7 @@
     "name": "sancherie/laravel-json-api",
     "description": "A JSON API wrapper for laravel",
     "type": "metapackage",
+    "license": ["MIT"],
     "require": {
         "laravel/framework": "6.0"
     },

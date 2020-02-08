@@ -44,7 +44,7 @@ class ResourceCollection extends JsonResourceCollection
         if ($collection->isEmpty()) {
             $this->collects = null;
         } else {
-            $this->collects = JsonApiBinder::get()->getResourceClass($collection[0]->getName());
+            $this->collects = JsonApiBinder::get()->getResourceClass($collection[0]);
         }
 
         parent::__construct($collection);

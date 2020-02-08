@@ -6,6 +6,7 @@ namespace JsonApi\Providers;
 use Carbon\Laravel\ServiceProvider;
 use Illuminate\Http\Resources\Json\Resource;
 use Illuminate\Support\Facades\Gate;
+use JsonApi\Binders\JsonApiBinder;
 use JsonApi\Console\Commands\DiscoverResources;
 
 /**
@@ -41,8 +42,8 @@ class JsonApiProvider extends ServiceProvider
      */
     public function registerPolicies()
     {
-        foreach (config('resources.modelToPolicy') as $model => $policy) {
-            Gate::policy($model, $policy);
+        foreach (JsonApiBinder::get()->getResources() as $name => $data) {
+            Gate::policy($data['model'], $data['policy']);
         }
     }
 

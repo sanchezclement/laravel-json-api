@@ -3,12 +3,10 @@ declare(strict_types=1);
 
 namespace JsonApi\Requests\Traits;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Pluralizer;
-use JsonApi\Exceptions\NotImplementedFunction;
-use JsonApi\Models\JsonApiModel;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Http\FormRequest;
+use JsonApi\Exceptions\NotImplementedFunction;
 
 /**
  * Trait HasModel
@@ -18,45 +16,30 @@ use Illuminate\Database\Eloquent\Model;
 trait HasModel
 {
     /**
-     * @var JsonApiModel
-     */
-    private $modelClass;
-
-    /**
      * @var Model
      */
-    private $model;
+    private Model $model;
+
+    /**
+     * HasModel constructor.
+     */
+    public function __construct()
+    {
+        $this->afterValidation(function () {
+            $this->model = $this->route()->parameter('model');
+
+            if (!$this->passesAuthorization()) {
+                $this->failedAuthorization();
+            }
+        });
+    }
 
     /**
      * @return Model
      */
-    public final function getModel()
+    public final function getModel(): Model
     {
         return $this->model;
-    }
-
-    private final function initializeModel()
-    {
-        $this->loadModel();
-
-        if (!$this->passesAuthorization()) {
-            $this->failedAuthorization();
-        }
-    }
-
-    private final function loadModel()
-    {
-        $name = $this->route('resource') ?? explode('/', $this->path())[0];
-        $this->modelClass = JsonApiModel::getClassFromName($name);
-
-        if (is_null($id = $this->route('id'))) {
-            $this->model = $this->modelClass::make();
-        } else {
-            $this->model = $this->modelClass::findOrFail($id);
-        }
-
-        $this->route()->setParameter(Pluralizer::singular($name), $this->model);
-
     }
 
     /**
@@ -88,6 +71,6 @@ trait HasModel
 
     protected final function failedAuthorization()
     {
-        abort(403, 'HasModel::failedAuthorization');
+        abort(403, "The main resource action is not authorized");
     }
 }

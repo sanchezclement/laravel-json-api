@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace JsonApi\Resources;
 
-use JsonApi\Models\JsonApiModel;
+use JsonApi\Binders\JsonApiModel;
 use JsonApi\Requests\Params\Inclusion;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;

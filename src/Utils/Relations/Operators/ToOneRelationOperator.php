@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace JsonApi\Utils\Relations\Operators;
 
-use JsonApi\Models\JsonApiModel;
+use JsonApi\Binders\JsonApiModel;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;

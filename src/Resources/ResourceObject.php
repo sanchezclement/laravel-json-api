@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace JsonApi\Resources;
 
-use JsonApi\Models\JsonApiModel;
-use JsonApi\Requests\Params\Inclusion;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
+use JsonApi\Binders\JsonApiBinder;
+use JsonApi\Requests\Params\Inclusion;
 
 /**
  * Class ResourceObject
@@ -18,7 +18,7 @@ abstract class ResourceObject extends JsonResource
     /**
      * @var Inclusion
      */
-    private $inclusion;
+    private Inclusion $inclusion;
 
     /**
      * Create a new resource instance.
@@ -42,19 +42,10 @@ abstract class ResourceObject extends JsonResource
         $model = $parameters[0] ?? null;
 
         if (self::class === static::class) {
-            return static::makeFromName(JsonApiModel::getName($model), ...$parameters);
+            return JsonApiBinder::get()->makeResource($model, ...$parameters);
         } else {
             return new static(...$parameters);
         }
-    }
-
-    /**
-     * @param string $name
-     * @return string|ResourceObject
-     */
-    public static function getClassFromName(string $name): string
-    {
-        return config('resources.nameToResource')[$name];
     }
 
     /**
@@ -66,7 +57,7 @@ abstract class ResourceObject extends JsonResource
     public final function toArray($request)
     {
         return [
-            'type' => JsonApiModel::getName($this->resource),
+            'type' => JsonApiBinder::get()->getName($this->resource),
             'id' => $this->resource->getKey(),
             'attributes' => $this->toAttributes($request),
             'relationships' => $this->toRelationships(),
@@ -96,16 +87,6 @@ abstract class ResourceObject extends JsonResource
     protected abstract function toAttributes(Request $request): array;
 
     /**
-     * @param string $name
-     * @param mixed ...$parameters
-     * @return ResourceObject|JsonResource
-     */
-    private static function makeFromName(string $name, ...$parameters)
-    {
-        return static::getClassFromName($name)::make(...$parameters);
-    }
-
-    /**
      * @return Collection
      */
     private final function toRelationships()
@@ -121,7 +102,7 @@ abstract class ResourceObject extends JsonResource
     private final function toLinks(): array
     {
         return [
-            'self' => route(JsonApiModel::getName($this->resource) . ".id", $this->resource->getKey())
+            'self' => route(JsonApiBinder::get()->getName($this->resource) . ".id", $this->resource->getKey())
         ];
     }
 }

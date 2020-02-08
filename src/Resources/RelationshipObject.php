@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use JsonApi\Models\JsonApiModel;
+use JsonApi\Binders\JsonApiModel;
 use JsonApi\Requests\Params\Pagination;
 
 /**

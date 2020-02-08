@@ -31,11 +31,6 @@ class DiscoverResources extends Command
     private $config = [];
 
     /**
-     * @var array
-     */
-    private $resources = [];
-
-    /**
      * Create a new command instance.
      *
      * @return void
@@ -60,6 +55,7 @@ class DiscoverResources extends Command
             return 1;
         }
 
+        $this->config = ['resources' => [], 'reverse' => []];
         $this->discoverModels($resource);
         $this->writeDiscoveredResources();
         return 0;
@@ -103,7 +99,6 @@ class DiscoverResources extends Command
             $resourceClass = "App\Http\Resources\\{$modelName}Resource";
             $policyClass = "App\Policies\\{$modelName}Policy";
         }
-        $this->info("$name $modelClass $resourceClass $policyClass");
 
         if (class_exists($resourceClass) && class_exists($policyClass)) {
             $this->registerResource($name, $modelClass, $resourceClass, $policyClass);
@@ -119,32 +114,22 @@ class DiscoverResources extends Command
      */
     private function registerResource(string $name, string $modelClass, string $resourceClass, string $policyClass): void
     {
-        $this->resources[$name] = [$modelClass, $resourceClass, $policyClass];
+        $this->config['reverse'][$modelClass] = $name;
+        $this->config['reverse'][$resourceClass] = $name;
+        $this->config['reverse'][$policyClass] = $name;
+
+        $this->config['resources'][$name] = [
+            'model' => $modelClass,
+            'resource' => $resourceClass,
+            'policy' => $policyClass
+        ];
+
+        $this->info("Discovered $name : [$modelClass / $resourceClass / $policyClass]");
     }
 
     private function writeDiscoveredResources(): void
     {
-        $this->config = config('resources');
-
-        $this->addDiscoveredResourcesToConfig();
-
         $text = '<?php return ' . var_export($this->config, true) . ';';
-        $this->info($text);
         file_put_contents(config_path('resources.php'), $text);
-    }
-
-    private function addDiscoveredResourcesToConfig(): void
-    {
-        $this->config['nameToModel'] = [];
-        $this->config['nameToResource'] = [];
-        $this->config['modelToName'] = [];
-        $this->config['modelToPolicy'] = [];
-
-        foreach ($this->resources as $name => [$model, $resource, $policy]) {
-            $this->config['nameToModel'][$name] = $model;
-            $this->config['nameToResource'][$name] = $resource;
-            $this->config['modelToName'][$model] = $name;
-            $this->config['modelToPolicy'][$model] = $policy;
-        }
     }
 }

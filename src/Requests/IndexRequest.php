@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace JsonApi\Requests;
 
-use JsonApi\Models\JsonApiModel;
+use JsonApi\Binders\JsonApiModel;
 use JsonApi\Requests\Traits\HasFilter;
 use JsonApi\Requests\Traits\HasPagination;
 use JsonApi\Requests\Traits\HasSorting;

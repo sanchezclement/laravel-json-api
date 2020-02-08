@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace JsonApi\Requests;
 
+use Illuminate\Database\Eloquent\Model;
 use JsonApi\Requests\Traits\HasInclusion;
 use JsonApi\Requests\Traits\HasModel;
 use JsonApi\Resources\ResourceObject;
@@ -17,6 +18,11 @@ class BaseRequest extends FormRequest
     use HasModel, HasInclusion {
         HasInclusion::__construct as __constructHasInclusion;
     }
+
+    /**
+     * @var Model
+     */
+    private Model $model;
 
     /**
      * @var callable[]
@@ -47,6 +53,8 @@ class BaseRequest extends FormRequest
         $content = null)
     {
         parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
+
+        $this->model = $this->route()->parameter('model');
 
         $this->__constructHasInclusion();
     }

@@ -15,14 +15,9 @@ use JsonApi\Exceptions\NotImplementedFunction;
  */
 trait HasModel
 {
-    /**
-     * @var Model
-     */
-    private Model $model;
 
     protected function initializeModel()
     {
-        $this->model = $this->route()->parameter('model');
 
         if (!$this->passesAuthorization()) {
             $this->failedAuthorization();

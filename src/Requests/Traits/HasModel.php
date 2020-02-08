@@ -20,18 +20,13 @@ trait HasModel
      */
     private Model $model;
 
-    /**
-     * HasModel constructor.
-     */
-    public function __construct()
+    protected function initializeModel()
     {
-        $this->afterValidation(function () {
-            $this->model = $this->route()->parameter('model');
+        $this->model = $this->route()->parameter('model');
 
-            if (!$this->passesAuthorization()) {
-                $this->failedAuthorization();
-            }
-        });
+        if (!$this->passesAuthorization()) {
+            $this->failedAuthorization();
+        }
     }
 
     /**

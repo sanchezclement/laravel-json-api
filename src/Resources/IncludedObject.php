@@ -84,7 +84,7 @@ class IncludedObject
      */
     private final function addIncluded($resource)
     {
-        if ($resource instanceof JsonApiModel) {
+        if ($resource instanceof Model) {
             $this->addIncludedModel($resource);
         } else if ($resource instanceof Collection) {
             $this->addIncludedCollection($resource);
@@ -94,15 +94,15 @@ class IncludedObject
     }
 
     /**
-     * @param JsonApiModel $model
+     * @param Model $model
      */
-    private final function addIncludedModel(JsonApiModel $model)
+    private final function addIncludedModel(Model $model)
     {
-        if (!array_key_exists($model->getName(), $this->map)) {
-            $this->map[$model->getName()] = [];
+        if (!array_key_exists(JsonApiModel::getName($model), $this->map)) {
+            $this->map[JsonApiModel::getName($model)] = [];
         }
 
-        $this->map[$model->getName()][$model->getKey()] = $model;
+        $this->map[JsonApiModel::getName($model)][$model->getKey()] = $model;
     }
 
     /**

@@ -3,13 +3,14 @@ declare(strict_types=1);
 
 namespace JsonApi\Resources;
 
-use JsonApi\Models\JsonApiModel;
-use JsonApi\Requests\Params\Pagination;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use JsonApi\Models\JsonApiModel;
+use JsonApi\Requests\Params\Pagination;
 
 /**
  * Class RelationshipObject
@@ -18,7 +19,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class RelationshipObject extends JsonResource
 {
     /**
-     * @var JsonApiModel
+     * @var Model
      */
     private $model;
 
@@ -33,7 +34,7 @@ class RelationshipObject extends JsonResource
     private $relationName;
 
     /**
-     * @var JsonApiModel
+     * @var Model
      */
     private $related;
 
@@ -77,11 +78,11 @@ class RelationshipObject extends JsonResource
         return [
             'data' => $this->related ? ResourceIdentifier::make($this->related) : null,
             'links' => [
-                'self' => route("{$this->model->getName()}.id.relationships", [
+                'self' => route(JsonApiModel::getName($this->model) . ".id.relationships", [
                     $this->model->getKey(), $this->relation
                 ]),
                 'related' => $this->when($this->related, function () {
-                    return route("{$this->related->getName()}.id", [$this->related->getKey()]);
+                    return route(JsonApiModel::getName($this->related) . ".id", [$this->related->getKey()]);
                 })
             ],
             'meta' => [],
@@ -93,7 +94,7 @@ class RelationshipObject extends JsonResource
      */
     private function serializeToManyRelationship(): array
     {
-        $path = route("{$this->model->getName()}.id.relationships", [$this->model->getKey(), $this->relationName]);
+        $path = route(JsonApiModel::getName($this->model) . ".id.relationships", [$this->model->getKey(), $this->relationName]);
 
         $pagination = Pagination::make($path)->process($this->relation->getQuery());
 

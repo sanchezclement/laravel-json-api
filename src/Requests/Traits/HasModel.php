@@ -20,12 +20,12 @@ trait HasModel
     private $modelClass;
 
     /**
-     * @var JsonApiModel
+     * @var Model
      */
     private $model;
 
     /**
-     * @return JsonApiModel
+     * @return Model
      */
     public final function getModel()
     {

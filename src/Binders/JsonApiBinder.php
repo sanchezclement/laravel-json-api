@@ -29,7 +29,7 @@ class JsonApiBinder
     {
         static::$instance = $this;
 
-        $this->config = config('resource');
+        $this->config = config('resources');
     }
 
     /**

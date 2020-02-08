@@ -30,6 +30,8 @@ class JsonApiBinder
         static::$instance = $this;
 
         $this->config = config('resources', ['resources' => [], 'reverse' => []]);
+
+        if (!array())
     }
 
     /**

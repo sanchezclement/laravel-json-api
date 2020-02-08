@@ -75,7 +75,7 @@ class ResourceCollection extends JsonResourceCollection
             'data' => $this->collection,
             'links' => $this->pagination->getLinks(),
             'meta' => [
-                $this->merge(config('app.meta')),
+                $this->merge(config('json-api.meta', [])),
                 $this->merge($this->pagination->getMeta())
             ],
             'included' => IncludedObject::make($this->collection, $this->inclusion)->toArray()

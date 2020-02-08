@@ -75,7 +75,7 @@ abstract class ResourceObject extends JsonResource
     public function with($request)
     {
         return [
-            'meta' => config('app.meta'),
+            'meta' => config('json-api.meta'),
             'included' => IncludedObject::make($this->resource, $this->inclusion),
         ];
     }

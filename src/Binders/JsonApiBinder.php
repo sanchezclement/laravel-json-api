@@ -51,6 +51,15 @@ class JsonApiBinder
     }
 
     /**
+     * @param string $name
+     * @return bool
+     */
+    public function has(string $name): bool
+    {
+        return array_key_exists($name, $this->config['resources']);
+    }
+
+    /**
      * @param $object
      * @param $id
      * @return Model
@@ -131,6 +140,14 @@ class JsonApiBinder
     }
 
     /**
+     * @return array
+     */
+    public function getResources(): array
+    {
+        return $this->config['resources'];
+    }
+
+    /**
      * @param $name
      * @return array
      */
@@ -141,13 +158,5 @@ class JsonApiBinder
         }
 
         return $this->config['resources'][$name];
-    }
-
-    /**
-     * @return array
-     */
-    public function getResources(): array
-    {
-        return $this->config['resources'];
     }
 }

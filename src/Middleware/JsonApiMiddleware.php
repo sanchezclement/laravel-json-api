@@ -8,10 +8,10 @@ use Illuminate\Http\Request;
 use JsonApi\Binders\JsonApiBinder;
 
 /**
- * Class BindModels
+ * Class JsonApiMiddleware
  * @package JsonApi\Middleware
  */
-class BindModels
+class JsonApiMiddleware
 {
     /**
      * Handle an incoming request.

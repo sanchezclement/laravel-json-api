@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace JsonApi\Resources;
 
-use JsonApi\Requests\IndexRequest;
-use JsonApi\Requests\Params\Inclusion;
-use JsonApi\Requests\Params\Pagination;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection as JsonResourceCollection;
 use Illuminate\Http\Resources\MissingValue;
 use Illuminate\Pagination\AbstractPaginator;
 use Illuminate\Support\Collection;
+use JsonApi\Binders\JsonApiBinder;
+use JsonApi\Requests\Params\Inclusion;
+use JsonApi\Requests\Params\Pagination;
 
 /**
  * Class ResourceCollection
@@ -19,14 +19,14 @@ use Illuminate\Support\Collection;
 class ResourceCollection extends JsonResourceCollection
 {
     /**
-     * @var IndexRequest
+     * @var Pagination
      */
-    protected $pagination;
+    protected Pagination $pagination;
 
     /**
      * @var Inclusion
      */
-    protected $inclusion;
+    protected Inclusion $inclusion;
 
     /**
      * Create a new resource instance.
@@ -44,35 +44,10 @@ class ResourceCollection extends JsonResourceCollection
         if ($collection->isEmpty()) {
             $this->collects = null;
         } else {
-            $this->collects = ResourceObject::getClassFromName($collection[0]->getName());
+            $this->collects = JsonApiBinder::get()->getResourceClass($collection[0]->getName());
         }
 
         parent::__construct($collection);
-    }
-
-    /**
-     * Map the given collection resource into its individual resources.
-     *
-     * @param  mixed  $resource
-     * @return mixed
-     */
-    protected function collectResource($resource)
-    {
-        if ($resource instanceof MissingValue) {
-            return $resource;
-        }
-
-        $collects = $this->collects();
-
-        $this->collection = $collects && ! $resource->first() instanceof $collects
-            ? $resource->map(function ($model) use ($collects) {
-                return new $collects($model, $this->inclusion);
-            })
-            : $resource->toBase();
-
-        return $resource instanceof AbstractPaginator
-            ? $resource->setCollection($this->collection)
-            : $this->collection;
     }
 
     /**
@@ -99,11 +74,36 @@ class ResourceCollection extends JsonResourceCollection
         return [
             'data' => $this->collection,
             'links' => $this->pagination->getLinks(),
-            'meta' =>  [
+            'meta' => [
                 $this->merge(config('app.meta')),
                 $this->merge($this->pagination->getMeta())
             ],
             'included' => IncludedObject::make($this->collection, $this->inclusion)->toArray()
         ];
+    }
+
+    /**
+     * Map the given collection resource into its individual resources.
+     *
+     * @param mixed $resource
+     * @return mixed
+     */
+    protected function collectResource($resource)
+    {
+        if ($resource instanceof MissingValue) {
+            return $resource;
+        }
+
+        $collects = $this->collects();
+
+        $this->collection = $collects && !$resource->first() instanceof $collects
+            ? $resource->map(function ($model) use ($collects) {
+                return new $collects($model, $this->inclusion);
+            })
+            : $resource->toBase();
+
+        return $resource instanceof AbstractPaginator
+            ? $resource->setCollection($this->collection)
+            : $this->collection;
     }
 }

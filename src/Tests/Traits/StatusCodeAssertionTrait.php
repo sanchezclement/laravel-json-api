@@ -52,14 +52,6 @@ trait StatusCodeAssertionTrait
     /**
      * @return JsonApiTestResponse
      */
-    public function assertNoContent()
-    {
-        return $this->assertStatus(204);
-    }
-
-    /**
-     * @return JsonApiTestResponse
-     */
     public function assertUnauthorized()
     {
         return $this->assertStatus(401);

@@ -18,6 +18,7 @@ trait HasModel
 
     protected function initializeModel()
     {
+        $this->model = $this->route()->parameter('model');
 
         if (!$this->passesAuthorization()) {
             $this->failedAuthorization();

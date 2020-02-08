@@ -54,8 +54,6 @@ class BaseRequest extends FormRequest
     {
         parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
 
-        $this->model = $this->route()->parameter('model');
-
         $this->__constructHasInclusion();
     }
 

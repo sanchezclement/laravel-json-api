@@ -19,6 +19,13 @@
             "JsonApi\\": "src/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "JsonApi\\Providers\\JsonApiProvider"
+            ]
+        }
+    },
     "prefer-stable": true,
     "minimum-stability": "dev"
 }

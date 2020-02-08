@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\JsonApi\Utils\Relations\Operators;
+namespace JsonApi\Utils\Relations\Operators;
 
-use App\JsonApi\Models\JsonApiModel;
+use JsonApi\Models\JsonApiModel;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;

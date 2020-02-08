@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace App\JsonApi\Requests;
+namespace JsonApi\Requests;
 
-use App\JsonApi\Resources\EmptyResourceObject;
-use App\JsonApi\Resources\ResourceObject;
+use JsonApi\Resources\EmptyResourceObject;
+use JsonApi\Resources\ResourceObject;
 use Illuminate\Database\Eloquent\Model;
 
 /**

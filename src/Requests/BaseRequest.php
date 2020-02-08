@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace App\JsonApi\Requests;
+namespace JsonApi\Requests;
 
-use App\JsonApi\Requests\Traits\HasInclusion;
-use App\JsonApi\Requests\Traits\HasModel;
-use App\JsonApi\Resources\ResourceObject;
+use JsonApi\Requests\Traits\HasInclusion;
+use JsonApi\Requests\Traits\HasModel;
+use JsonApi\Resources\ResourceObject;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**

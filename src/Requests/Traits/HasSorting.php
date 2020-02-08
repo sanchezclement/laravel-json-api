@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace App\JsonApi\Requests\Traits;
+namespace JsonApi\Requests\Traits;
 
-use App\JsonApi\Requests\Params\Sorting;
-use App\JsonApi\Requests\Params\SortingParser;
+use JsonApi\Requests\Params\Sorting;
+use JsonApi\Requests\Params\SortingParser;
 use Illuminate\Database\Eloquent\Builder;
 
 /**

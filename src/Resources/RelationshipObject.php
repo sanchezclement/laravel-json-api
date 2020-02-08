@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace App\JsonApi\Resources;
+namespace JsonApi\Resources;
 
-use App\JsonApi\Models\JsonApiModel;
-use App\JsonApi\Requests\Params\Pagination;
+use JsonApi\Models\JsonApiModel;
+use JsonApi\Requests\Params\Pagination;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\Relation;

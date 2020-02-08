@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace App\JsonApi\Resources;
+namespace JsonApi\Resources;
 
-use App\JsonApi\Requests\IndexRequest;
-use App\JsonApi\Requests\Params\Inclusion;
-use App\JsonApi\Requests\Params\Pagination;
+use JsonApi\Requests\IndexRequest;
+use JsonApi\Requests\Params\Inclusion;
+use JsonApi\Requests\Params\Pagination;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection as JsonResourceCollection;
 use Illuminate\Http\Resources\MissingValue;

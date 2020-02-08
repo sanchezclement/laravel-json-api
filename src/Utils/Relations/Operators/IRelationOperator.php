@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\JsonApi\Utils\Relations\Operators;
+namespace JsonApi\Utils\Relations\Operators;
 
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Database\Eloquent\Model;

@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace App\JsonApi\Requests\Traits;
+namespace JsonApi\Requests\Traits;
 
-use App\JsonApi\Requests\BodyRequest;
-use App\JsonApi\Utils\Relations\Operators\IRelationOperator;
-use App\JsonApi\Utils\Relations\Operators\ToManyRelationOperator;
-use App\JsonApi\Utils\Relations\Operators\ToOneRelationOperator;
-use App\JsonApi\Utils\Relations\RelationHandler;
+use JsonApi\Requests\BodyRequest;
+use JsonApi\Utils\Relations\Operators\IRelationOperator;
+use JsonApi\Utils\Relations\Operators\ToManyRelationOperator;
+use JsonApi\Utils\Relations\Operators\ToOneRelationOperator;
+use JsonApi\Utils\Relations\RelationHandler;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

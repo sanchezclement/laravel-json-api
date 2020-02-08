@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\JsonApi\Models;
+namespace JsonApi\Models;
 
 use Illuminate\Database\Eloquent\Model;
 

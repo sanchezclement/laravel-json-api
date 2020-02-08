@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace App\JsonApi\Requests;
+namespace JsonApi\Requests;
 
-use App\JsonApi\Models\JsonApiModel;
-use App\JsonApi\Requests\Traits\HasFilter;
-use App\JsonApi\Requests\Traits\HasPagination;
-use App\JsonApi\Requests\Traits\HasSorting;
-use App\JsonApi\Resources\ResourceCollection;
+use JsonApi\Models\JsonApiModel;
+use JsonApi\Requests\Traits\HasFilter;
+use JsonApi\Requests\Traits\HasPagination;
+use JsonApi\Requests\Traits\HasSorting;
+use JsonApi\Resources\ResourceCollection;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;

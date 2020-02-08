@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\JsonApi\Requests\Params;
+namespace JsonApi\Requests\Params;
 
 use Illuminate\Database\Eloquent\Builder;
 

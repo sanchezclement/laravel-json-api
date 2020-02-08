@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\JsonApi\Requests\Traits;
+namespace JsonApi\Requests\Traits;
 
-use App\JsonApi\Requests\Params\Filter;
+use JsonApi\Requests\Params\Filter;
 use Illuminate\Database\Eloquent\Builder;
 
 /**

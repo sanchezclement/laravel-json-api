@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\JsonApi\Exceptions;
+namespace JsonApi\Exceptions;
 
 use Exception;
 

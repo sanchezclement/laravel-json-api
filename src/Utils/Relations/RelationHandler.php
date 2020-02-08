@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\JsonApi\Utils\Relations;
+namespace JsonApi\Utils\Relations;
 
-use App\JsonApi\Utils\Relations\Operators\IRelationOperator;
+use JsonApi\Utils\Relations\Operators\IRelationOperator;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;

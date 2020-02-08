@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace App\JsonApi\Resources;
+namespace JsonApi\Resources;
 
-use App\JsonApi\Models\JsonApiModel;
-use App\JsonApi\Requests\Params\Inclusion;
+use JsonApi\Models\JsonApiModel;
+use JsonApi\Requests\Params\Inclusion;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;

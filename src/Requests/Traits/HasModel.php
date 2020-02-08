@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace App\JsonApi\Requests\Traits;
+namespace JsonApi\Requests\Traits;
 
-use App\JsonApi\Exceptions\NotImplementedFunction;
-use App\JsonApi\Models\JsonApiModel;
+use JsonApi\Exceptions\NotImplementedFunction;
+use JsonApi\Models\JsonApiModel;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Database\Eloquent\Model;
 

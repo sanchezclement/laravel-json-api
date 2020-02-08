@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\JsonApi\Resources;
+namespace JsonApi\Resources;
 
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\CriterionResource;
@@ -9,7 +9,7 @@ use App\Http\Resources\ImageResource;
 use App\Http\Resources\NegociationResource;
 use App\Http\Resources\OptionResource;
 use App\Http\Resources\SaleResource;
-use App\JsonApi\Requests\Params\Inclusion;
+use JsonApi\Requests\Params\Inclusion;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;

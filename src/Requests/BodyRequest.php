@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace App\JsonApi\Requests;
+namespace JsonApi\Requests;
 
-use App\JsonApi\Requests\Traits\HasAttributes;
-use App\JsonApi\Requests\Traits\HasRelations;
+use JsonApi\Requests\Traits\HasAttributes;
+use JsonApi\Requests\Traits\HasRelations;
 use Illuminate\Support\Arr;
 
 /**

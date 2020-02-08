@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace JsonApi\Requests\Traits;
 
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Pluralizer;
 use JsonApi\Exceptions\NotImplementedFunction;
 use JsonApi\Models\JsonApiModel;
 use Illuminate\Contracts\Auth\Access\Gate;
@@ -11,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Trait HasModel
  * @package App\JsonApi\Request\Traits
+ * @mixin FormRequest
  */
 trait HasModel
 {
@@ -51,6 +54,9 @@ trait HasModel
         } else {
             $this->model = $this->modelClass::findOrFail($id);
         }
+
+        $this->route()->setParameter(Pluralizer::singular($name), $this->model);
+
     }
 
     /**

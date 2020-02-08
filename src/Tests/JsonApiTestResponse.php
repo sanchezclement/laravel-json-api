@@ -75,6 +75,14 @@ class JsonApiTestResponse extends TestResponse
     }
 
     /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->decodeResponseJson()['data']['id'];
+    }
+
+    /**
      * @param array $attributes
      * @return JsonApiTestResponse
      */

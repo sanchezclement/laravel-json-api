@@ -33,7 +33,7 @@ class JsonApiTestResponse extends TestResponse
      * @param $id
      * @return JsonApiTestResponse
      */
-    public function assertIdentifier(string $type, $id)
+    public function assertIdentifier(string $type, $id = null)
     {
         if (is_null($id)) {
             $this->assertJson(['data' => ['type' => $type]])->assertJsonStructure(['data' => ['id']]);
@@ -89,7 +89,7 @@ class JsonApiTestResponse extends TestResponse
     public function assertExactAttributes(array $attributes)
     {
         $actual = json_encode(Arr::get(Arr::sortRecursive(
-            (array) $this->decodeResponseJson()
+            (array)$this->decodeResponseJson()
         ), 'data.attributes', []));
 
         PHPUnit::assertEquals(json_encode(Arr::sortRecursive($attributes)), $actual);

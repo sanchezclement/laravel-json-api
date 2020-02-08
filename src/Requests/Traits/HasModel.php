@@ -15,6 +15,10 @@ use JsonApi\Exceptions\NotImplementedFunction;
  */
 trait HasModel
 {
+    /**
+     * @var Model
+     */
+    private Model $model;
 
     protected function initializeModel()
     {

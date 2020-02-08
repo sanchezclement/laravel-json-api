@@ -15,7 +15,7 @@ trait HasInclusion
     /**
      * @var Inclusion
      */
-    private $inclusions;
+    private Inclusion $inclusion;
 
     public function __construct()
     {
@@ -30,7 +30,7 @@ trait HasInclusion
 
     private final function initializeInclusion()
     {
-        $this->inclusions = Inclusion::makeFromString($this->get('include', ''));
+        $this->inclusion = Inclusion::makeFromString($this->get('include', ''));
     }
 
     /**
@@ -38,7 +38,7 @@ trait HasInclusion
      */
     public final function getInclusions(): Inclusion
     {
-        return $this->inclusions;
+        return $this->inclusion;
     }
 
     /**

@@ -3,15 +3,16 @@ declare(strict_types=1);
 
 namespace JsonApi\Requests;
 
-use JsonApi\Binders\JsonApiModel;
+use Exception;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Collection;
 use JsonApi\Requests\Traits\HasFilter;
+use JsonApi\Requests\Traits\HasInclusion;
 use JsonApi\Requests\Traits\HasPagination;
 use JsonApi\Requests\Traits\HasSorting;
 use JsonApi\Resources\ResourceCollection;
-use Exception;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Support\Collection;
 
 /**
  * Class FormRequest
@@ -19,41 +20,12 @@ use Illuminate\Support\Collection;
  */
 class IndexRequest extends BaseRequest
 {
-    use HasPagination, HasSorting, HasFilter {
-        HasPagination::__construct as __constructHasPagination;
-        HasSorting::__construct as __constructHasSorting;
-        HasFilter::__construct as __constructHasFilter;
-    }
+    use HasInclusion, HasPagination, HasSorting, HasFilter;
 
     /**
      * @var Collection
      */
-    protected $result;
-
-    /**
-     * @param array $query The GET parameters
-     * @param array $request The POST parameters
-     * @param array $attributes The request attributes (parameters parsed from the PATH_INFO, ...)
-     * @param array $cookies The COOKIE parameters
-     * @param array $files The FILES parameters
-     * @param array $server The SERVER parameters
-     * @param string|resource|null $content The raw body data
-     */
-    public function __construct(
-        array $query = [],
-        array $request = [],
-        array $attributes = [],
-        array $cookies = [],
-        array $files = [],
-        array $server = [],
-        $content = null)
-    {
-        parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
-
-        $this->__constructHasPagination();
-        $this->__constructHasSorting();
-        $this->__constructHasFilter();
-    }
+    protected Collection $result;
 
     /**
      * @return mixed
@@ -92,7 +64,7 @@ class IndexRequest extends BaseRequest
             return $builder;
         } else if ($builder instanceof Relation) {
             return $builder->getQuery();
-        } else if ($builder instanceof JsonApiModel) {
+        } else if ($builder instanceof Model) {
             return $builder::query();
         } else {
             throw new Exception("Hello world");
@@ -103,7 +75,7 @@ class IndexRequest extends BaseRequest
      * @param array $parameters
      * @return void
      */
-    protected function defaultAction(...$parameters): void
+    protected function process(...$parameters): void
     {
         $this->result = $this->processBuilder($parameters[0] ?? null)->get();
     }

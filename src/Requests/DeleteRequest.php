@@ -14,14 +14,6 @@ use Illuminate\Database\Eloquent\Model;
 class DeleteRequest extends BaseRequest
 {
     /**
-     * @param array $parameters
-     */
-    protected final function defaultAction(...$parameters): void
-    {
-        $this->getModel()->delete();
-    }
-
-    /**
      * @return string
      */
     protected function getPolicy(): string

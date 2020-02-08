@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\Assert as PHPUnit;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
+use JsonApi\Tests\Traits\StatusCodeAssertionTrait;
 
 /**
  * Class JsonApiTestResponse
@@ -14,6 +15,8 @@ use Illuminate\Support\Arr;
  */
 class JsonApiTestResponse extends TestResponse
 {
+    use StatusCodeAssertionTrait;
+
     /**
      * Create a new test response instance.
      *
@@ -27,32 +30,16 @@ class JsonApiTestResponse extends TestResponse
 
     /**
      * @param string $type
-     * @return JsonApiTestResponse
-     */
-    public function assertType(string $type)
-    {
-        $this->assertJson([
-            'data' => [
-                'type' => $type,
-            ]
-        ]);
-
-        return $this;
-    }
-
-    /**
-     * @param string $type
      * @param $id
      * @return JsonApiTestResponse
      */
     public function assertIdentifier(string $type, $id)
     {
-        $this->assertJson([
-            'data' => [
-                'type' => $type,
-                'id' => $id,
-            ]
-        ]);
+        if (is_null($id)) {
+            $this->assertJson(['data' => ['type' => $type]])->assertJsonStructure(['data' => ['id']]);
+        } else {
+            $this->assertJson(['data' => ['type' => $type, 'id' => $id]]);
+        }
 
         return $this;
     }
@@ -103,33 +90,6 @@ class JsonApiTestResponse extends TestResponse
     }
 
     /**
-     * @param string $id
-     * @return JsonApiTestResponse
-     */
-    public function assertId($id)
-    {
-        $this->assertJson([
-            'data' => [
-                'id' => $id,
-            ]
-        ]);
-
-        return $this;
-    }
-
-    /**
-     * @return JsonApiTestResponse
-     */
-    public function assertHasId()
-    {
-        $this->assertJsonStructure([
-            'data' => ['id']
-        ]);
-
-        return $this;
-    }
-
-    /**
      * @return JsonApiTestResponse
      */
     public function assertNoData()
@@ -137,19 +97,6 @@ class JsonApiTestResponse extends TestResponse
         $this->assertJson([
             'data' => null
         ]);
-
-        return $this;
-    }
-
-    /**
-     * Assert that the response has the given status code.
-     *
-     * @param int $status
-     * @return JsonApiTestResponse
-     */
-    public function assertStatus($status)
-    {
-        parent::assertStatus($status);
 
         return $this;
     }

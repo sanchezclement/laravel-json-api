@@ -18,12 +18,12 @@ class BaseRequest extends FormRequest
     /**
      * @var callable[]
      */
-    private array $beforeValidation;
+    private array $beforeValidation = [];
 
     /**
      * @var callable[]
      */
-    private array $afterValidation;
+    private array $afterValidation = [];
 
     /**
      * @var array

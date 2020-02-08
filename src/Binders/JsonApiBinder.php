@@ -28,7 +28,8 @@ class JsonApiBinder
     private function __construct()
     {
         static::$instance = $this;
-        $this->config = config('resources');
+
+        $this->config = config('resources', ['resources' => [], 'reverse' => []]);
     }
 
     /**

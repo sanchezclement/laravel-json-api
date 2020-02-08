@@ -41,7 +41,7 @@ class JsonApiProvider extends ServiceProvider
      */
     public function registerPolicies()
     {
-        foreach (config('resource.modelToPolicy') as $model => $policy) {
+        foreach (config('resources.modelToPolicy') as $model => $policy) {
             Gate::policy($model, $policy);
         }
     }

@@ -20,7 +20,12 @@ trait HasModel
      */
     private Model $model;
 
-    protected function initializeModel()
+    public function __construct()
+    {
+        $this->beforeValidation(fn () => $this->initializeModel());
+    }
+
+    private function initializeModel()
     {
         $this->model = $this->route()->parameter('model');
 

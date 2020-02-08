@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Console\Commands;
+namespace JsonApi\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Pluralizer;

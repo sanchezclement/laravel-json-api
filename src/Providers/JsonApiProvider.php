@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace JsonApi\Providers;
 
-use App\Console\Commands\DiscoverResources;
 use Carbon\Laravel\ServiceProvider;
 use Illuminate\Http\Resources\Json\Resource;
+use JsonApi\Console\Commands\DiscoverResources;
 
 /**
  * Class JsonApiProvider

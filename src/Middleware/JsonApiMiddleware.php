@@ -30,6 +30,7 @@ class JsonApiMiddleware
             $model = JsonApiBinder::get()->findOrFail($name, $id);
         }
 
+        $request->route()->setParameter('id', $model);
         $request->route()->setParameter('model', $model);
 
         return $next($request);

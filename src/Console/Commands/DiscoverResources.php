@@ -96,7 +96,7 @@ class DiscoverResources extends Command
         } else {
             $modelNamespace = explode('\\', $modelClass);
             $modelName = end($modelNamespace);
-            $name = Str::kebab($modelName);
+            $name = Pluralizer::plural(Str::kebab($modelName));
             $resourceClass = "App\Http\Resources\\{$modelName}Resource";
             $policyClass = "App\Policies\\{$modelName}Policy";
         }

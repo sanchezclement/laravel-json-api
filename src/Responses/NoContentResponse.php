@@ -9,7 +9,7 @@ use Illuminate\Http\JsonResponse;
  * Class AcceptedResponse
  * @package JsonApi\Responses
  */
-class NoContent extends JsonResponse
+class NoContentResponse extends JsonResponse
 {
     /**
      * AcceptedResponse constructor.

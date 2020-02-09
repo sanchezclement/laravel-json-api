@@ -101,7 +101,12 @@ class DiscoverResources extends Command
         }
 
         if (class_exists($resourceClass) && class_exists($policyClass)) {
-            $this->registerResource($name, $modelClass, $resourceClass, $policyClass);
+            $this->registerResource(
+                $name,
+                $modelClass,
+                class_exists($resourceClass) ? $resourceClass: null,
+                class_exists($policyClass) ? $policyClass : null
+            );
         }
     }
 
@@ -112,7 +117,11 @@ class DiscoverResources extends Command
      * @param string $policyClass
      * @return void
      */
-    private function registerResource(string $name, string $modelClass, string $resourceClass, string $policyClass): void
+    private function registerResource(
+        string $name,
+        string $modelClass,
+        ?string $resourceClass,
+        ?string $policyClass): void
     {
         $this->config['reverse'][$modelClass] = $name;
         $this->config['reverse'][$resourceClass] = $name;
@@ -124,7 +133,7 @@ class DiscoverResources extends Command
             'policy' => $policyClass
         ];
 
-        $this->info("Discovered $name : [$modelClass / $resourceClass / $policyClass]");
+        $this->info("Discovered $name : $modelClass | $resourceClass | $policyClass");
     }
 
     private function writeDiscoveredResources(): void

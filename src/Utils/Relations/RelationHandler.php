@@ -17,22 +17,22 @@ class RelationHandler
     /**
      * @var Model
      */
-    private $model;
+    private Model $model;
 
     /**
      * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * @var IRelationOperator
      */
-    private $operator;
+    private IRelationOperator $operator;
 
     /**
      * @var Model|Collection
      */
-    private $related;
+    private  $related;
 
     /**
      * CustomRelationOperator constructor.

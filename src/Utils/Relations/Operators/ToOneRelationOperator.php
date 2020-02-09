@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace JsonApi\Utils\Relations\Operators;
 
-use JsonApi\Binders\JsonApiModel;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
+use JsonApi\Binders\JsonApiBinder;
 
 /**
  * Class ToOneRelationOperator
@@ -62,7 +62,7 @@ class ToOneRelationOperator implements IRelationOperator
      */
     public function resolve(array $data)
     {
-        return JsonApiModel::findFromName($data['type'], $data['id']) ?? abort(422);
+        return JsonApiBinder::get()->findModel($data['type'], $data['id']) ?? abort(422);
     }
 
     /**

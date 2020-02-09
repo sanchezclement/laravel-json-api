@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace JsonApi\Utils\Relations\Operators;
 
-use JsonApi\Binders\JsonApiModel;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
+use JsonApi\Binders\JsonApiBinder;
 
 /**
  * Class ToManyRelationOperator
@@ -66,7 +66,7 @@ class ToManyRelationOperator implements IRelationOperator
         return collect($data)->mapToGroups(function (array $item) {
             return [$item['type'] => $item['id']];
         })->each(function ($ids, $type) {
-            $collection = JsonApiModel::findFromName($type, $ids);
+            $collection = JsonApiBinder::get()->findModel($type, $ids);
 
             if ($collection->count() !== count($ids)) {
                 abort(422);

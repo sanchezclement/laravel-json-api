@@ -88,7 +88,9 @@ class ResourceBuilder
      */
     public function collection($builder = null): ResourceCollection
     {
-        $builder = RequestBuilder::make($this->filter, $this->pagination, $this->sorting)->build($builder);
+        $builder = RequestBuilder::make(
+            $this->filter, $this->pagination, $this->sorting
+        )->build($builder ?? $this->model);
 
         return new ResourceCollection($builder->get(), $this->pagination, $this->inclusion);
     }

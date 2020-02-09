@@ -191,12 +191,7 @@ class Filter
      */
     private function applyRelationFilter(Builder $builder, ?string $value, string $operator)
     {
-        \Log::info("relation");
-        \Log::info($value);
-
-
         $callback = $value ? function (Builder $builder) use ($value) {
-            \Log::info("hello");
             $builder->whereKey(explode(',', $value));
         } : null;
 

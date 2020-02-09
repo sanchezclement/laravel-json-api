@@ -12,7 +12,7 @@ use JsonApi\Requests\Params\Pagination;
  */
 interface IHasPagination
 {
-    public function initializePagination(): void;
+    function initializePagination(): void;
 
     /**
      * @return Pagination

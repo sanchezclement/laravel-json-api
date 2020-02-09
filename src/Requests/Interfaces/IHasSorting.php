@@ -14,7 +14,7 @@ use JsonApi\Requests\Params\Sorting;
  */
 interface IHasSorting
 {
-    public function initializeSorting(): void;
+    function initializeSorting(): void;
 
     /**
      * @return Sorting

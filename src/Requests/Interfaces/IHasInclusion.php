@@ -14,7 +14,7 @@ interface IHasInclusion
     /**
      * @return void
      */
-    public function initializeInclusion(): void;
+    function initializeInclusion(): void;
 
     /**
      * @return Inclusion

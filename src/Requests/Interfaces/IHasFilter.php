@@ -11,7 +11,7 @@ use JsonApi\Requests\Params\Filter;
  */
 interface IHasFilter
 {
-    public function initializeFilter(): void;
+    function initializeFilter(): void;
 
     /**
      * @return Filter

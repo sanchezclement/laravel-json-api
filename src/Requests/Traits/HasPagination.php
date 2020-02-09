@@ -20,7 +20,7 @@ trait HasPagination
     /**
      * HasPagination constructor.
      */
-    public function initializePagination(): void
+    protected function initializePagination(): void
     {
         $this->rules(['page.number' => 'integer|min:0', 'page.size' => 'integer|min:1|max:50',]);
 

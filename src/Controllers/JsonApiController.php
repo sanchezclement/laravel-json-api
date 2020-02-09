@@ -25,7 +25,7 @@ class JsonApiController
     public function __construct()
     {
         $this->response = new ResponseBuilder;
-        $this->resource = new ResourceBuilder;
+        $this->resource = app(ResourceBuilder::class);
     }
 
     /**

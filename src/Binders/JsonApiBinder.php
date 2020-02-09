@@ -104,7 +104,7 @@ class JsonApiBinder
      */
     public function makeResource($object, ...$parameters): JsonResource
     {
-        return $this->getResourceClass($object)::make(...$parameters);
+        return $this->getResourceClass($object)::make($object, ...$parameters);
     }
 
     /**

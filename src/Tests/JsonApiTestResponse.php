@@ -102,9 +102,7 @@ class JsonApiTestResponse extends TestResponse
      */
     public function assertNoData()
     {
-        $this->assertJson([
-            'data' => null
-        ]);
+        $this->assertJsonMissing(['data'])->assertJsonStructure(['meta']);
 
         return $this;
     }

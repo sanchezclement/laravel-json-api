@@ -16,12 +16,4 @@ class UnprocessableEntityResponse extends ErrorResponse
     {
         parent::__construct(422);
     }
-
-    /**
-     * @return static
-     */
-    public static function make(): self
-    {
-        return new static();
-    }
 }

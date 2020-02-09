@@ -5,13 +5,11 @@ namespace JsonApi\Requests\Traits;
 
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Http\FormRequest;
 use JsonApi\Exceptions\NotImplementedFunction;
 
 /**
  * Trait HasModel
  * @package App\JsonApi\Request\Traits
- * @mixin FormRequest
  */
 trait HasModel
 {
@@ -20,18 +18,15 @@ trait HasModel
      */
     private Model $model;
 
-    public function __construct()
+    public function initializeModel(): void
     {
-        $this->beforeValidation(fn () => $this->initializeModel());
-    }
+        $this->beforeValidation(function () {
+            $this->model = $this->route()->parameter('model');
 
-    private function initializeModel()
-    {
-        $this->model = $this->route()->parameter('model');
-
-        if (!$this->passesAuthorization()) {
-            $this->failedAuthorization();
-        }
+            if (!$this->passesAuthorization()) {
+                $this->failedAuthorization();
+            }
+        });
     }
 
     /**
@@ -45,7 +40,7 @@ trait HasModel
     /**
      * @return bool
      */
-    protected final function passesAuthorization(): bool
+    private final function passesAuthorization()
     {
         return $this->authorize(app(Gate::class), $this->model) ? true : false;
     }
@@ -56,7 +51,7 @@ trait HasModel
      * @return mixed
      * @throws NotImplementedFunction
      */
-    protected function authorize(Gate $gate, Model $model)
+    private function authorize(Gate $gate, Model $model)
     {
         return $gate->raw($this->getPolicy(), $model->exists ? $model : get_class($model));
     }
@@ -64,12 +59,12 @@ trait HasModel
     /**
      * @return string
      */
-    protected function getPolicy(): string
+    private function getPolicy(): string
     {
         throw new NotImplementedFunction();
     }
 
-    protected final function failedAuthorization()
+    private final function failedAuthorization()
     {
         abort(403, "The main resource action is not authorized");
     }

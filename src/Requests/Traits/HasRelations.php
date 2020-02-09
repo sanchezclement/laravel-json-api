@@ -24,22 +24,19 @@ trait HasRelations
     /**
      * @var Collection|RelationHandler[]
      */
-    private $relations;
+    private Collection $relations;
 
     /**
      * @var array
      */
-    private $policies;
+    private array $policies;
 
-    /**
-     * HasRelations constructor.
-     */
-    public function __construct()
+    public function initializeRelations(): void
     {
-        $this->relations = collect();
-        $this->policies = $this->getRelationPolicies();
-
         $this->afterValidation(function () {
+            $this->relations = collect();
+            $this->policies = $this->getRelationPolicies();
+
             foreach ($this->input('data.relationships', []) as $name => ['data' => $data]) {
 
                 $this->relations[$name] = new RelationHandler($this->getModel(), $name, $data, $this->getOperator($name));

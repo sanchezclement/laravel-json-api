@@ -4,21 +4,17 @@ declare(strict_types=1);
 namespace JsonApi\Requests;
 
 use Illuminate\Support\Arr;
+use JsonApi\Requests\Interfaces\IHasRelations;
 use JsonApi\Requests\Traits\HasAttributes;
-use JsonApi\Requests\Traits\HasInclusion;
 use JsonApi\Requests\Traits\HasRelations;
-use JsonApi\Resources\ResourceObject;
 
 /**
  * Class BodyRequest
  * @package App\JsonApi\Requests
  */
-class BodyRequest extends BaseRequest
+class BodyRequest extends ResourceRequest implements IHasRelations
 {
-    use HasInclusion, HasAttributes, HasRelations {
-        HasInclusion::__construct as __constructHasInclusion;
-        HasRelations::__construct as __constructHasRelations;
-    }
+    use HasAttributes, HasRelations;
 
     /**
      * @param array $query The GET parameters
@@ -40,20 +36,11 @@ class BodyRequest extends BaseRequest
     {
         parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
 
-        $this->__constructHasInclusion();
-        $this->__constructHasRelations();
+        $this->initializeRelations();
 
         $this->beforeValidation(function () {
             $this->initializeBody();
         });
-    }
-
-    /**
-     * @return ResourceObject
-     */
-    public function makeResource()
-    {
-        return ResourceObject::make($this->getModel(), $this->getInclusions());
     }
 
     private function initializeBody(): void
@@ -77,6 +64,6 @@ class BodyRequest extends BaseRequest
             $rules['data.relationships.' . $relation] = 'required';
         }
 
-        $this->addRules($rules);
+        $this->rules($rules);
     }
 }

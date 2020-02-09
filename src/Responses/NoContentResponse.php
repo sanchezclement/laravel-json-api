@@ -18,12 +18,4 @@ class NoContentResponse extends JsonResponse
     {
         parent::__construct(null, 204, [], 0);
     }
-
-    /**
-     * @return static
-     */
-    public static function make(): self
-    {
-        return new static();
-    }
 }

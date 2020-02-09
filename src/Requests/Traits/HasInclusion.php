@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace JsonApi\Requests\Traits;
 
 use JsonApi\Requests\Params\Inclusion;
-use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Trait HasInclusion
@@ -17,22 +16,6 @@ trait HasInclusion
      */
     private Inclusion $inclusion;
 
-    public function __construct()
-    {
-        $this->addRules([
-            'include' => 'string'
-        ]);
-
-        $this->afterValidation(function () {
-            $this->initializeInclusion();
-        });
-    }
-
-    private final function initializeInclusion()
-    {
-        $this->inclusion = Inclusion::makeFromString($this->get('include', ''));
-    }
-
     /**
      * @return Inclusion
      */
@@ -41,11 +24,12 @@ trait HasInclusion
         return $this->inclusion;
     }
 
-    /**
-     * @param Builder $builder
-     */
-    public final function preprocess(Builder $builder)
+    private final function initializeInclusion()
     {
-        $builder->with($this->all());
+        $this->rules(['include' => 'string']);
+
+        $this->afterValidation(function () {
+            $this->inclusion = Inclusion::makeFromString($this->get('include', ''));
+        });
     }
 }

@@ -3,26 +3,16 @@ declare(strict_types=1);
 
 namespace JsonApi\Requests;
 
-use Illuminate\Support\Collection;
-use JsonApi\Requests\Interfaces\IHasFilter;
-use JsonApi\Requests\Interfaces\IHasPagination;
-use JsonApi\Requests\Interfaces\IHasSorting;
-use JsonApi\Requests\Traits\HasFilter;
-use JsonApi\Requests\Traits\HasPagination;
-use JsonApi\Requests\Traits\HasSorting;
+use JsonApi\Requests\Interfaces\IHasInclusion;
+use JsonApi\Requests\Traits\HasInclusion;
 
 /**
- * Class FormRequest
+ * Class ResourceRequest
  * @package App\JsonApi\Requests
  */
-class IndexRequest extends ResourceRequest implements IHasPagination, IHasSorting, IHasFilter
+class ResourceRequest extends BaseRequest implements IHasInclusion
 {
-    use HasPagination, HasSorting, HasFilter;
-
-    /**
-     * @var Collection
-     */
-    protected Collection $result;
+    use HasInclusion;
 
     /**
      * @param array $query The GET parameters
@@ -44,16 +34,6 @@ class IndexRequest extends ResourceRequest implements IHasPagination, IHasSortin
     {
         parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
 
-        $this->initializePagination();
-        $this->initializeSorting();
-        $this->initializeFilter();
-    }
-
-    /**
-     * @return string
-     */
-    protected function getPolicy(): string
-    {
-        return 'index';
+        $this->initializeInclusion();
     }
 }

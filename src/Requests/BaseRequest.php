@@ -4,14 +4,14 @@ declare(strict_types=1);
 namespace JsonApi\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use JsonApi\Requests\Interfaces\IHasModel;
 use JsonApi\Requests\Traits\HasModel;
-use JsonApi\Resources\ResourceObject;
 
 /**
  * Class BaseRequest
  * @package App\JsonApi\Requests
  */
-class BaseRequest extends FormRequest
+class BaseRequest extends FormRequest implements IHasModel
 {
     use HasModel;
 
@@ -31,11 +31,26 @@ class BaseRequest extends FormRequest
     private array $rules = [];
 
     /**
-     * @return array
+     * @param array $query The GET parameters
+     * @param array $request The POST parameters
+     * @param array $attributes The request attributes (parameters parsed from the PATH_INFO, ...)
+     * @param array $cookies The COOKIE parameters
+     * @param array $files The FILES parameters
+     * @param array $server The SERVER parameters
+     * @param string|resource|null $content The raw body data
      */
-    public final function rules(): array
+    public function __construct(
+        array $query = [],
+        array $request = [],
+        array $attributes = [],
+        array $cookies = [],
+        array $files = [],
+        array $server = [],
+        $content = null)
     {
-        return $this->rules;
+        parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
+
+        $this->initializeModel();
     }
 
     /**
@@ -58,19 +73,15 @@ class BaseRequest extends FormRequest
 
     /**
      * @param array $rules
-     * @return void
+     * @return array
      */
-    public final function addRules(array $rules): void
+    public final function rules(?array $rules = null): array
     {
-        $this->rules = array_merge($this->rules, $rules);
-    }
+        if ($rules) {
+            $this->rules = array_merge($this->rules, $rules);
+        }
 
-    /**
-     * @return ResourceObject
-     */
-    public function makeResource()
-    {
-        return ResourceObject::make($this->getModel());
+        return $rules;
     }
 
     protected final function prepareForValidation()

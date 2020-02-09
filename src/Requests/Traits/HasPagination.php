@@ -15,23 +15,20 @@ trait HasPagination
     /**
      * @var Pagination
      */
-    private $pagination;
+    private Pagination $pagination;
 
     /**
      * HasPagination constructor.
      */
-    public function __construct()
+    public function initializePagination(): void
     {
+        $this->rules(['page.number' => 'integer|min:0', 'page.size' => 'integer|min:1|max:50',]);
+
         $this->afterValidation(function () {
             $this->pagination = Pagination::make(
                 $this->path(), $this->input('page.number'), $this->input('page.size')
             );
         });
-
-        $this->addRules([
-            'page.number' => 'integer|min:0',
-            'page.size' => 'integer|min:1|max:50',
-        ]);
     }
 
     /**

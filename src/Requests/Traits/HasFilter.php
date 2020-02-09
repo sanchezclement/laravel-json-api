@@ -15,16 +15,14 @@ trait HasFilter
     /**
      * @var Filter
      */
-    private $filter;
+    private Filter $filter;
 
     /**
      * HasFilter constructor.
      */
-    public function __construct()
+    public function initializeFilter(): void
     {
-        $this->addRules([
-            'filter' => 'array',
-        ]);
+        $this->rules(['filter' => 'array',]);
 
         $this->afterValidation(function () {
             $this->filter = Filter::make($this->input('filter', []));

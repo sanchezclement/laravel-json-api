@@ -16,21 +16,16 @@ trait HasSorting
     /**
      * @var Sorting
      */
-    private $sorting;
+    private Sorting $sorting;
 
     /**
      * HasSorting constructor.
      */
-    public function __construct()
+    public function initializeSorting()
     {
         $this->afterValidation(function () {
-            $this->initializeSorting();
+            $this->sorting = SortingParser::make()->parse($this->input('sort'));
         });
-    }
-
-    private final function initializeSorting(): void
-    {
-        $this->sorting = SortingParser::make()->parse($this->input('sort'));
     }
 
     /**

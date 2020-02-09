@@ -40,7 +40,7 @@ trait HasModel
     /**
      * @return bool
      */
-    private final function passesAuthorization()
+    protected final function passesAuthorization()
     {
         return $this->authorize(app(Gate::class), $this->model) ? true : false;
     }

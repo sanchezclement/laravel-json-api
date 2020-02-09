@@ -101,14 +101,12 @@ class DiscoverResources extends Command
             $policyClass = "App\Policies\\{$modelName}Policy";
         }
 
-        if (class_exists($resourceClass) && class_exists($policyClass)) {
-            $this->registerResource(
-                $name,
-                $modelClass,
-                class_exists($resourceClass) ? $resourceClass: null,
-                class_exists($policyClass) ? $policyClass : null
-            );
-        }
+        $this->registerResource(
+            $name,
+            $modelClass,
+            class_exists($resourceClass) ? $resourceClass: null,
+            class_exists($policyClass) ? $policyClass : null
+        );
     }
 
     /**

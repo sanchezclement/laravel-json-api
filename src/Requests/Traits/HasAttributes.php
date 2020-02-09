@@ -40,7 +40,7 @@ trait HasAttributes
      */
     public function getAttribute(string $key)
     {
-        return $this->get("data.attributes.$key");
+        return $this->input("data.attributes.$key");
     }
 
     /**

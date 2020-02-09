@@ -64,7 +64,7 @@ trait HasModel
         throw new NotImplementedFunction();
     }
 
-    private final function failedAuthorization()
+    protected final function failedAuthorization()
     {
         abort(403, "The main resource action is not authorized");
     }

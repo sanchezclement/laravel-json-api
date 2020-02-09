@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace JsonApi\Requests\Interfaces;
 
-use Illuminate\Foundation\Http\FormRequest;
 use JsonApi\Requests\Params\Pagination;
 
 /**

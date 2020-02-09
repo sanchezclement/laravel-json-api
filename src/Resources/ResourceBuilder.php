@@ -70,14 +70,14 @@ class ResourceBuilder
         if ($this->isIndex) {
             return $this->collection($builder);
         } else {
-            return $this->make();
+            return $this->resource();
         }
     }
 
     /**
      * @return JsonResource
      */
-    public function make(): JsonResource
+    public function resource(): JsonResource
     {
         return JsonApiBinder::get()->makeResource($this->model, $this->inclusion);
     }

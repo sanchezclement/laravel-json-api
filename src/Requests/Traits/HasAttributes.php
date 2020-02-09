@@ -35,6 +35,15 @@ trait HasAttributes
     }
 
     /**
+     * @param string $key
+     * @return mixed
+     */
+    public function getAttribute(string $key)
+    {
+        return $this->get("data.attributes.$key");
+    }
+
+    /**
      * @return array
      */
     protected function attributesRules(): array

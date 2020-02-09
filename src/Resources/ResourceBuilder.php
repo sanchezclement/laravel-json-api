@@ -64,7 +64,7 @@ class ResourceBuilder
     public function build($builder = null): JsonResource
     {
         if (!$this->parsed) {
-            $this->parseRequest();
+            abort(500, "The request has not been parsed.");
         }
 
         if ($this->isIndex) {
@@ -93,10 +93,11 @@ class ResourceBuilder
         return new ResourceCollection($builder->get(), $this->pagination, $this->inclusion);
     }
 
-    private function parseRequest(): void
+    /**
+     * @param Request $request
+     */
+    public function parseRequest(Request $request): void
     {
-        $request = app(Request::class);
-
         if ($request instanceof BaseRequest) {
             $this->model = $request->getModel();
         }

@@ -6,6 +6,7 @@ namespace JsonApi\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use JsonApi\Requests\Interfaces\IHasModel;
 use JsonApi\Requests\Traits\HasModel;
+use JsonApi\Resources\ResourceBuilder;
 
 /**
  * Class BaseRequest
@@ -49,6 +50,7 @@ class BaseRequest extends FormRequest implements IHasModel
         $content = null)
     {
         parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
+
 
         $this->initializeModel();
     }
@@ -101,5 +103,7 @@ class BaseRequest extends FormRequest implements IHasModel
         foreach ($this->afterValidation as $callback) {
             $callback();
         }
+
+        app(ResourceBuilder::class)->parseRequest($this);
     }
 }

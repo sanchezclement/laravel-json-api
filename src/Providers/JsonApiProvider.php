@@ -8,6 +8,7 @@ use Illuminate\Http\Resources\Json\Resource;
 use Illuminate\Support\Facades\Gate;
 use JsonApi\Binders\JsonApiBinder;
 use JsonApi\Console\Commands\DiscoverResources;
+use JsonApi\Resources\ResourceBuilder;
 
 /**
  * Class JsonApiProvider
@@ -33,6 +34,8 @@ class JsonApiProvider extends ServiceProvider
         }
 
         $this->registerPolicies();
+
+        $this->app->singleton(ResourceBuilder::class, new ResourceBuilder);
     }
 
     /**

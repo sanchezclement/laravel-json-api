@@ -21,7 +21,7 @@ trait HasSorting
     /**
      * HasSorting constructor.
      */
-    protected function initializeSorting()
+    public function initializeSorting()
     {
         $this->afterValidation(function () {
             $this->sorting = SortingParser::make()->parse($this->input('sort'));

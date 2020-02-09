@@ -19,5 +19,5 @@ interface IHasSorting
     /**
      * @return Sorting
      */
-    public function getSorting(): Sorting;
+    function getSorting(): Sorting;
 }

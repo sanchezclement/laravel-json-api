@@ -19,5 +19,5 @@ interface IHasInclusion
     /**
      * @return Inclusion
      */
-    public function getInclusions(): Inclusion;
+    function getInclusions(): Inclusion;
 }

@@ -20,7 +20,7 @@ trait HasFilter
     /**
      * HasFilter constructor.
      */
-    protected function initializeFilter(): void
+    public function initializeFilter(): void
     {
         $this->rules(['filter' => 'array',]);
 

@@ -16,5 +16,5 @@ interface IHasFilter
     /**
      * @return Filter
      */
-    public function getFilter(): Filter;
+    function getFilter(): Filter;
 }

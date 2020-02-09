@@ -17,5 +17,5 @@ interface IHasPagination
     /**
      * @return Pagination
      */
-    public function getPagination(): Pagination;
+    function getPagination(): Pagination;
 }

@@ -24,7 +24,7 @@ trait HasInclusion
         return $this->inclusion;
     }
 
-    protected final function initializeInclusion()
+    public final function initializeInclusion()
     {
         $this->rules(['include' => 'string']);
 

@@ -81,7 +81,7 @@ class BaseRequest extends FormRequest implements IHasModel
             $this->rules = array_merge($this->rules, $rules);
         }
 
-        return $rules;
+        return $this->rules;
     }
 
     protected final function prepareForValidation()

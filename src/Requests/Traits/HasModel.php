@@ -59,7 +59,7 @@ trait HasModel
     /**
      * @return string
      */
-    private function getPolicy(): string
+    protected function getPolicy(): string
     {
         throw new NotImplementedFunction();
     }

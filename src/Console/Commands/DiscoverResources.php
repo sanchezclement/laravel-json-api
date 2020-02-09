@@ -5,6 +5,7 @@ namespace JsonApi\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Pluralizer;
+use Illuminate\Support\Str;
 
 /**
  * Class DiscoverResources
@@ -95,7 +96,7 @@ class DiscoverResources extends Command
         } else {
             $modelNamespace = explode('\\', $modelClass);
             $modelName = end($modelNamespace);
-            $name = Pluralizer::plural(strtolower($modelName));
+            $name = Str::kebab($modelName);
             $resourceClass = "App\Http\Resources\\{$modelName}Resource";
             $policyClass = "App\Policies\\{$modelName}Policy";
         }

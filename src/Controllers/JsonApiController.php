@@ -4,8 +4,9 @@ declare(strict_types=1);
 namespace JsonApi\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 use JsonApi\Resources\ResourceBuilder;
+use JsonApi\Resources\ResourceCollection;
+use JsonApi\Resources\ResourceObject;
 use JsonApi\Responses\ResponseBuilder;
 
 /**
@@ -27,7 +28,7 @@ class JsonApiController
     /**
      * @param Request|null $request
      * @param null $query
-     * @return ResponseBuilder|JsonResource
+     * @return ResourceCollection|ResourceObject|ResponseBuilder
      */
     public function response(?Request $request = null, $query = null)
     {

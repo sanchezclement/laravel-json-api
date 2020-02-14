@@ -5,6 +5,7 @@ namespace JsonApi\Binders;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
+use JsonApi\Resources\ResourceObject;
 
 /**
  * Class JsonApiBinder
@@ -90,7 +91,7 @@ class JsonApiBinder
 
     /**
      * @param mixed $object
-     * @return JsonResource|string
+     * @return ResourceObject|string
      */
     public function getResourceClass($object): string
     {
@@ -100,9 +101,9 @@ class JsonApiBinder
     /**
      * @param mixed $object
      * @param array $parameters
-     * @return JsonResource
+     * @return ResourceObject
      */
-    public function makeResource($object, ...$parameters): JsonResource
+    public function makeResource($object, ...$parameters): ResourceObject
     {
         return $this->getResourceClass($object)::make($object, ...$parameters);
     }

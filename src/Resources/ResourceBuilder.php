@@ -4,9 +4,7 @@ declare(strict_types=1);
 namespace JsonApi\Resources;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 use JsonApi\Binders\JsonApiBinder;
 use JsonApi\Requests\BaseRequest;
 use JsonApi\Requests\DeleteRequest;
@@ -68,9 +66,9 @@ class ResourceBuilder
 
     /**
      * @param null $builder
-     * @return ResourceObject|DeletedResponse
+     * @return ResourceObject|DeletedResponse|ResourceCollection
      */
-    public function build($builder = null): JsonResource
+    public function build($builder = null)
     {
         if ($this->request instanceof IndexRequest) {
             return $this->collection($builder);
@@ -80,7 +78,7 @@ class ResourceBuilder
     }
 
     /**
-     * @return JsonResponse|JsonResource
+     * @return ResourceObject|DeletedResponse
      */
     public function resource()
     {

@@ -123,7 +123,7 @@ class JsonApiBinder
      */
     public function getName($object, bool $strict = true): ?string
     {
-        if (in_array($object, array_keys($this->config))) {
+        if (in_array($object, array_keys($this->config['resources']))) {
             return $object;
         } else {
             if (is_string($object)) {

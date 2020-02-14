@@ -68,7 +68,7 @@ trait HasRelations
 
     public final function applyToManyRelation(): void
     {
-        $this->relations->where(function (RelationHandler $handler) {
+        $this->relations->filter(function (RelationHandler $handler) {
             return $handler->getOperator() instanceof ToManyRelationOperator;
         })->each(function (RelationHandler $handler) {
             $handler->apply();

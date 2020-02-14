@@ -83,9 +83,9 @@ class ResourceBuilder
     public function resource()
     {
         if ($this->request instanceof DeleteRequest) {
-            return JsonApiBinder::get()->makeResource($this->model, $this->inclusion);
-        } else {
             return new DeletedResponse();
+        } else {
+            return JsonApiBinder::get()->makeResource($this->model, $this->inclusion);
         }
     }
 

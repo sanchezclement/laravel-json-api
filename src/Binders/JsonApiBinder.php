@@ -118,9 +118,10 @@ class JsonApiBinder
 
     /**
      * @param mixed $object
+     * @param bool $strict
      * @return string
      */
-    public function getName($object): string
+    public function getName($object, bool $strict = true): ?string
     {
         if (in_array($object, array_keys($this->config))) {
             return $object;
@@ -131,12 +132,21 @@ class JsonApiBinder
                 $class = get_class($object);
             }
 
-            if (!array_key_exists($class, $this->config['reverse'])) {
+            if (!array_key_exists($class, $this->config['reverse']) && $strict) {
                 abort(500, "The class '$class' has no associated resource name.");
             }
 
-            return $this->config['reverse'][$class];
+            return $this->config['reverse'][$class] ?? null;
         }
+    }
+
+    /**
+     * @param $object
+     * @return bool
+     */
+    public function isResolvable($object): bool
+    {
+        return $this->getName($object, false) ? true : false;
     }
 
     /**

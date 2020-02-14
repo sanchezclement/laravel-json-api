@@ -25,21 +25,17 @@ class JsonApiController
     }
 
     /**
-     * @return ResponseBuilder
+     * @param Request|null $request
+     * @param null $query
+     * @return ResponseBuilder|JsonResource
      */
-    public function response(): ResponseBuilder
+    public function response(?Request $request = null, $query = null)
     {
-        return $this->response;
-    }
-
-    /**
-     * @param Request $request
-     * @param null $builder
-     * @return JsonResource
-     */
-    public function resource(Request $request, $builder = null): JsonResource
-    {
-        return (new ResourceBuilder($request))->build($builder);
+        if ($request) {
+            return $this->builder($request)->build($query);
+        } else {
+            return $this->response;
+        }
     }
 
     /**

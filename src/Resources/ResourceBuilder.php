@@ -23,14 +23,9 @@ use JsonApi\Requests\ResourceRequest;
 class ResourceBuilder
 {
     /**
-     * @var bool
+     * @var Request
      */
-    private bool $parsed = false;
-
-    /**
-     * @var bool
-     */
-    private bool $isIndex = false;
+    private Request $request;
 
     /**
      * @var Model
@@ -58,16 +53,23 @@ class ResourceBuilder
     private Sorting $sorting;
 
     /**
+     * ResourceBuilder constructor.
+     * @param Request $request
+     */
+    public function __construct(Request $request)
+    {
+        $this->request = $request;
+
+        $this->parseRequest($request);
+    }
+
+    /**
      * @param null $builder
      * @return JsonResource
      */
     public function build($builder = null): JsonResource
     {
-        if (!$this->parsed) {
-            abort(500, "The request has not been parsed.");
-        }
-
-        if ($this->isIndex) {
+        if ($this->request instanceof IndexRequest) {
             return $this->collection($builder);
         } else {
             return $this->resource();
@@ -98,7 +100,7 @@ class ResourceBuilder
     /**
      * @param Request $request
      */
-    public function parseRequest(Request $request): void
+    private function parseRequest(Request $request): void
     {
         if ($request instanceof BaseRequest) {
             $this->model = $request->getModel();
@@ -112,9 +114,6 @@ class ResourceBuilder
             $this->filter = $request->getFilter();
             $this->pagination = $request->getPagination();
             $this->sorting = $request->getSorting();
-            $this->isIndex = true;
         }
-
-        $this->parsed = true;
     }
 }

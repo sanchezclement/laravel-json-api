@@ -34,8 +34,6 @@ class JsonApiProvider extends ServiceProvider
         }
 
         $this->registerPolicies();
-
-        $this->app->singleton(ResourceBuilder::class, fn () => new ResourceBuilder);
     }
 
     /**

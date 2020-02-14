@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace JsonApi\Controllers;
 
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use JsonApi\Resources\ResourceBuilder;
 use JsonApi\Responses\ResponseBuilder;
 
@@ -17,15 +19,9 @@ class JsonApiController
      */
     private ResponseBuilder $response;
 
-    /**
-     * @var ResourceBuilder
-     */
-    private ResourceBuilder $resource;
-
     public function __construct()
     {
         $this->response = new ResponseBuilder;
-        $this->resource = app(ResourceBuilder::class);
     }
 
     /**
@@ -37,10 +33,21 @@ class JsonApiController
     }
 
     /**
+     * @param Request $request
+     * @param null $builder
+     * @return JsonResource
+     */
+    public function resource(Request $request, $builder = null): JsonResource
+    {
+        return (new ResourceBuilder($request))->build($builder);
+    }
+
+    /**
+     * @param Request $request
      * @return ResourceBuilder
      */
-    public function resource(): ResourceBuilder
+    public function builder(Request $request): ResourceBuilder
     {
-        return $this->resource;
+        return (new ResourceBuilder($request));
     }
 }

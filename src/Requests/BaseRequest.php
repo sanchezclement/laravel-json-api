@@ -51,7 +51,6 @@ class BaseRequest extends FormRequest implements IHasModel
     {
         parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
 
-
         $this->initializeModel();
     }
 
@@ -103,7 +102,5 @@ class BaseRequest extends FormRequest implements IHasModel
         foreach ($this->afterValidation as $callback) {
             $callback();
         }
-
-        app(ResourceBuilder::class)->parseRequest($this);
     }
 }

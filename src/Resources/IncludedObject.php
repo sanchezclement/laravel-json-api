@@ -21,9 +21,9 @@ class IncludedObject
     private $resource;
 
     /**
-     * @var array
+     * @var Inclusion
      */
-    private array $param;
+    private Inclusion $param;
 
     /**
      * @var array

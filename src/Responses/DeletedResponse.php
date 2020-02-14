@@ -18,6 +18,6 @@ class DeletedResponse extends JsonResponse
     {
         parent::__construct([
             'meta' => config('json-api.top-level-meta'),
-        ], 202, [], 0);
+        ], 200, [], 0);
     }
 }

@@ -4,12 +4,14 @@ declare(strict_types=1);
 namespace JsonApi\Tests\Traits;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Testing\TestCase;
 use JsonApi\Binders\JsonApiBinder;
 use JsonApi\Tests\JsonApiTestResponse;
 
 /**
  * Trait HasJsonApiCalls
  * @package JsonApi\Tests\Traits
+ * @mixin TestCase
  */
 trait HasJsonApiCalls
 {

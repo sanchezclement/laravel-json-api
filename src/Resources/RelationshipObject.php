@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use JsonApi\Binders\JsonApiModel;
+use JsonApi\Binders\JsonApiBinder;
 use JsonApi\Requests\Params\Pagination;
 
 /**
@@ -78,11 +78,11 @@ class RelationshipObject extends JsonResource
         return [
             'data' => $this->related ? ResourceIdentifier::make($this->related) : null,
             'links' => [
-                'self' => route(JsonApiModel::getName($this->model) . ".id.relationships", [
+                'self' => route(JsonApiBinder::get()->getName($this->model) . ".id.relationships", [
                     $this->model->getKey(), $this->relation
                 ]),
                 'related' => $this->when($this->related, function () {
-                    return route(JsonApiModel::getName($this->related) . ".id", [$this->related->getKey()]);
+                    return route(JsonApiBinder::get()->getName($this->related) . ".id", [$this->related->getKey()]);
                 })
             ],
             'meta' => [],
@@ -94,7 +94,7 @@ class RelationshipObject extends JsonResource
      */
     private function serializeToManyRelationship(): array
     {
-        $path = route(JsonApiModel::getName($this->model) . ".id.relationships", [$this->model->getKey(), $this->relationName]);
+        $path = route(JsonApiBinder::get()->getName($this->model) . ".id.relationships", [$this->model->getKey(), $this->relationName]);
 
         $pagination = Pagination::make($path)->process($this->relation->getQuery());
 

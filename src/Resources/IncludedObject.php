@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace JsonApi\Resources;
 
-use JsonApi\Binders\JsonApiModel;
+use JsonApi\Binders\JsonApiBinder;
 use JsonApi\Requests\Params\Inclusion;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -23,12 +23,12 @@ class IncludedObject
     /**
      * @var array
      */
-    private $param;
+    private array $param;
 
     /**
      * @var array
      */
-    private $map;
+    private array $map;
 
     /**
      * Create a new resource instance.
@@ -58,7 +58,7 @@ class IncludedObject
      */
     public function toArray()
     {
-        return $this->buildInclusionMap()->flatten()->map(function (JsonApiModel $model) {
+        return $this->buildInclusionMap()->flatten()->map(function (Model $model) {
             return ResourceObject::make($model, Inclusion::make());
         });
     }
@@ -98,11 +98,11 @@ class IncludedObject
      */
     private final function addIncludedModel(Model $model)
     {
-        if (!array_key_exists(JsonApiModel::getName($model), $this->map)) {
-            $this->map[JsonApiModel::getName($model)] = [];
+        if (!array_key_exists(JsonApiBinder::get()->getName($model), $this->map)) {
+            $this->map[JsonApiBinder::get()->getName($model)] = [];
         }
 
-        $this->map[JsonApiModel::getName($model)][$model->getKey()] = $model;
+        $this->map[JsonApiBinder::get()->getName($model)][$model->getKey()] = $model;
     }
 
     /**

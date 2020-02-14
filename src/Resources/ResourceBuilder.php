@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use JsonApi\Binders\JsonApiBinder;
 use JsonApi\Requests\BaseRequest;
+use JsonApi\Requests\DeleteRequest;
 use JsonApi\Requests\IndexRequest;
 use JsonApi\Requests\Params\Filter;
 use JsonApi\Requests\Params\Inclusion;
@@ -15,6 +16,7 @@ use JsonApi\Requests\Params\Pagination;
 use JsonApi\Requests\Params\Sorting;
 use JsonApi\Requests\RequestBuilder;
 use JsonApi\Requests\ResourceRequest;
+use JsonApi\Responses\DeletedResponse;
 
 /**
  * Class ResourceBuilder
@@ -65,7 +67,7 @@ class ResourceBuilder
 
     /**
      * @param null $builder
-     * @return JsonResource
+     * @return ResourceObject|DeletedResponse
      */
     public function build($builder = null): JsonResource
     {
@@ -77,11 +79,15 @@ class ResourceBuilder
     }
 
     /**
-     * @return JsonResource
+     * @return ResourceObject|DeletedResponse
      */
     public function resource(): JsonResource
     {
-        return JsonApiBinder::get()->makeResource($this->model, $this->inclusion);
+        if ($this->request instanceof DeleteRequest) {
+            return JsonApiBinder::get()->makeResource($this->model, $this->inclusion);
+        } else {
+            return new DeletedResponse();
+        }
     }
 
     /**

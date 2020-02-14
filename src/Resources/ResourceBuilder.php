@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace JsonApi\Resources;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use JsonApi\Binders\JsonApiBinder;
@@ -79,9 +80,9 @@ class ResourceBuilder
     }
 
     /**
-     * @return ResourceObject|DeletedResponse
+     * @return JsonResponse|JsonResource
      */
-    public function resource(): JsonResource
+    public function resource()
     {
         if ($this->request instanceof DeleteRequest) {
             return JsonApiBinder::get()->makeResource($this->model, $this->inclusion);

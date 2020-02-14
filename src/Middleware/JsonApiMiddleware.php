@@ -24,14 +24,16 @@ class JsonApiMiddleware
     {
         $name = $request->route('resource') ?? explode('/', $request->path())[0];
 
-        if (is_null($id = $request->route('id'))) {
-            $model = JsonApiBinder::get()->makeModel($name);
-        } else {
-            $model = JsonApiBinder::get()->findOrFail($name, $id);
-        }
+        if (JsonApiBinder::get()->isResolvable($name)) {
+            if (is_null($id = $request->route('id'))) {
+                $model = JsonApiBinder::get()->makeModel($name);
+            } else {
+                $model = JsonApiBinder::get()->findOrFail($name, $id);
+            }
 
-        $request->route()->setParameter('id', $model);
-        $request->route()->setParameter('model', $model);
+            $request->route()->setParameter('id', $model);
+            $request->route()->setParameter('model', $model);
+        }
 
         return $next($request);
     }

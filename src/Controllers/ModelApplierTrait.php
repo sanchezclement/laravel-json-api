@@ -28,15 +28,15 @@ trait ModelApplierTrait
         ?callable $afterSave = null): void
     {
         $this->applyAttributes($model, $request->getAttributes());
-        $this->applyRelations($model, $request->getToOneRelation());
+        $this->applyToOneRelation($model, $request);
 
-        $beforeSave ? $beforeSave() : null;
+        $beforeSave ? $beforeSave($model) : null;
 
         $model->save();
 
-        $afterSave ? $afterSave() : null;
+        $afterSave ? $afterSave($model) : null;
 
-        $this->applyRelations($model, $request->getToManyRelation());
+        $this->applyToManyRelation($model, $request);
     }
 
     /**
@@ -48,6 +48,24 @@ trait ModelApplierTrait
         $model->fill(collect($attributes)->mapWithKeys(function ($value, $key) {
             return [Str::camel($key) => $value];
         })->all());
+    }
+
+    /**
+     * @param Model $model
+     * @param BodyRequest $request
+     */
+    final public function applyToOneRelation(Model $model, BodyRequest $request): void
+    {
+        $this->applyRelations($model, $request->getToOneRelation());
+    }
+
+    /**
+     * @param Model $model
+     * @param BodyRequest $request
+     */
+    final public function applyToManyRelation(Model $model, BodyRequest $request): void
+    {
+        $this->applyRelations($model, $request->getToManyRelation());
     }
 
     /**

@@ -46,7 +46,7 @@ trait ModelApplierTrait
     private function applyAttributes(Model $model, array $attributes): void
     {
         $model->fill(collect($attributes)->mapWithKeys(function ($value, $key) {
-            return [Str::camel($key) => $value];
+            return [Str::snake($key) => $value];
         })->all());
     }
 

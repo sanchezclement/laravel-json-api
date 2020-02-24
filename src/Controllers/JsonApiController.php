@@ -15,6 +15,8 @@ use JsonApi\Responses\ResponseBuilder;
  */
 class JsonApiController
 {
+    use ModelApplierTrait;
+
     /**
      * @var ResponseBuilder
      */
@@ -22,7 +24,7 @@ class JsonApiController
 
     public function __construct()
     {
-        $this->response = new ResponseBuilder;
+        $this->response = new ResponseBuilder();
     }
 
     /**
@@ -44,6 +46,15 @@ class JsonApiController
      * @return ResourceBuilder
      */
     public function builder(Request $request): ResourceBuilder
+    {
+        return (new ResourceBuilder($request));
+    }
+
+    /**
+     * @param Request $request
+     * @return ResourceBuilder
+     */
+    public function rest(Request $request): ResourceBuilder
     {
         return (new ResourceBuilder($request));
     }

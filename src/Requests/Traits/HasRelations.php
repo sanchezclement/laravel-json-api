@@ -3,16 +3,16 @@ declare(strict_types=1);
 
 namespace JsonApi\Requests\Traits;
 
-use JsonApi\Requests\BodyRequest;
-use JsonApi\Utils\Relations\Operators\IRelationOperator;
-use JsonApi\Utils\Relations\Operators\ToManyRelationOperator;
-use JsonApi\Utils\Relations\Operators\ToOneRelationOperator;
-use JsonApi\Utils\Relations\RelationHandler;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
+use JsonApi\Requests\BodyRequest;
+use JsonApi\Utils\Relations\Operators\IRelationOperator;
+use JsonApi\Utils\Relations\Operators\ToManyRelationOperator;
+use JsonApi\Utils\Relations\Operators\ToOneRelationOperator;
+use JsonApi\Utils\Relations\RelationHandler;
 
 /**
  * Trait HasRelations
@@ -38,8 +38,7 @@ trait HasRelations
             $this->policies = $this->getRelationPolicies();
 
             foreach ($this->input('data.relationships', []) as $name => ['data' => $data]) {
-
-                $this->relations[$name] = new RelationHandler($this->getModel(), $name, $data, $this->getOperator($name));
+                $this->relations[$name] = new RelationHandler($name, $data, $this->getOperator($name));
             }
 
             if (($author = $this->getAuthorRelation())) {
@@ -48,31 +47,33 @@ trait HasRelations
         });
     }
 
-    public final function applyToOneRelation(): void
-    {
-        $this->relations->filter(function (RelationHandler $handler) {
-            return $handler->getOperator() instanceof ToOneRelationOperator;
-        })->each(function (RelationHandler $handler) {
-            $handler->apply();
-        });
-    }
-
     /**
      * @param string $name
      * @return Model|Collection|mixed
      */
-    public final function getRelation(string $name)
+    final public function getRelation(string $name)
     {
         return $this->relations[$name]->getRelated();
     }
 
-    public final function applyToManyRelation(): void
+    /**
+     * @return Collection
+     */
+    final public function getToOneRelation(): Collection
     {
-        $this->relations->filter(function (RelationHandler $handler) {
-            return $handler->getOperator() instanceof ToManyRelationOperator;
-        })->each(function (RelationHandler $handler) {
-            $handler->apply();
-        });
+        return $this->relations->filter(
+            fn (RelationHandler $handler) => $handler->getOperator() instanceof ToOneRelationOperator
+        );
+    }
+
+    /**
+     * @return Collection
+     */
+    final public function getToManyRelation(): Collection
+    {
+        return $this->relations->filter(
+            fn (RelationHandler $handler) => $handler->getOperator() instanceof ToOneRelationOperator
+        );
     }
 
     /**
@@ -103,7 +104,7 @@ trait HasRelations
      * @param string $name
      * @return IRelationOperator
      */
-    private final function getOperator(string $name): IRelationOperator
+    final private function getOperator(string $name): IRelationOperator
     {
         if (!array_key_exists($name, $this->policies)) {
             throw new AuthorizationException();
@@ -124,7 +125,7 @@ trait HasRelations
      * @return IRelationOperator
      * @throws AuthorizationException
      */
-    private final function getOperatorFromRelation(string $name, string $policy): IRelationOperator
+    final private function getOperatorFromRelation(string $name, string $policy): IRelationOperator
     {
         if (!method_exists($this->getModel(), $name)) {
             throw new AuthorizationException();
@@ -134,7 +135,7 @@ trait HasRelations
 
         if ($relation instanceof BelongsTo) {
             return new ToOneRelationOperator($policy);
-        } else if ($name instanceof BelongsToMany) {
+        } elseif ($name instanceof BelongsToMany) {
             return new ToManyRelationOperator($policy);
         } else {
             throw new AuthorizationException();

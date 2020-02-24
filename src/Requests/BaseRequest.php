@@ -6,7 +6,6 @@ namespace JsonApi\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use JsonApi\Requests\Interfaces\IHasModel;
 use JsonApi\Requests\Traits\HasModel;
-use JsonApi\Resources\ResourceBuilder;
 
 /**
  * Class BaseRequest

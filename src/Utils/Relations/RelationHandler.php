@@ -15,11 +15,6 @@ use Illuminate\Support\Collection;
 class RelationHandler
 {
     /**
-     * @var Model
-     */
-    private Model $model;
-
-    /**
      * @var string
      */
     private string $name;
@@ -32,18 +27,16 @@ class RelationHandler
     /**
      * @var Model|Collection
      */
-    private  $related;
+    private $related;
 
     /**
      * CustomRelationOperator constructor.
-     * @param Model $model
      * @param string $name
      * @param array $data
      * @param IRelationOperator $operator
      */
-    public function __construct(Model $model, string $name, array $data, IRelationOperator $operator)
+    public function __construct(string $name, array $data, IRelationOperator $operator)
     {
-        $this->model = $model;
         $this->name = $name;
         $this->operator = $operator;
 
@@ -58,9 +51,12 @@ class RelationHandler
         return $this->related;
     }
 
-    public function apply()
+    /**
+     * @param Model $model
+     */
+    public function apply(Model $model): void
     {
-        $this->operator->apply($this->model, $this->name, $this->related);
+        $this->operator->apply($model, $this->name, $this->related);
     }
 
     /**

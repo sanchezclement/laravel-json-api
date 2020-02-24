@@ -12,9 +12,13 @@ use JsonApi\Requests\BodyRequest;
  */
 trait HasAttributes
 {
-    public function applyAttributes(): void
+    /**
+     * @param string $key
+     * @return mixed
+     */
+    public function hasAttribute(string $key)
     {
-        $this->getModel()->fill($this->getAttributes());
+        return $this->has("data.attributes.$key");
     }
 
     /**
@@ -23,15 +27,6 @@ trait HasAttributes
     public function getAttributes()
     {
         return $this->validated()['data']['attributes'];
-    }
-
-    /**
-     * @param string $key
-     * @return mixed
-     */
-    public function hasAttribute(string $key)
-    {
-        return $this->has("data.attributes.$key");
     }
 
     /**

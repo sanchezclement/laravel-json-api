@@ -43,7 +43,7 @@ trait ModelApplierTrait
      * @param Model $model
      * @param array $attributes
      */
-    private function applyAttributes(Model $model, array $attributes): void
+    final public function applyAttributes(Model $model, array $attributes): void
     {
         $model->fill(collect($attributes)->mapWithKeys(function ($value, $key) {
             return [Str::snake($key) => $value];

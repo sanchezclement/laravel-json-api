@@ -66,7 +66,7 @@ class ToManyRelationOperator implements IRelationOperator
         return collect($data)->mapToGroups(function (array $item) {
             return [$item['type'] => $item['id']];
         })->each(function ($ids, $type) {
-            $collection = JsonApiBinder::get()->findModel($type, $ids);
+            $collection = JsonApiBinder::get()->find($type, $ids);
 
             if ($collection->count() !== count($ids)) {
                 abort(422);

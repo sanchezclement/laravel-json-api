@@ -62,7 +62,7 @@ class ToOneRelationOperator implements IRelationOperator
      */
     public function resolve(array $data)
     {
-        return JsonApiBinder::get()->findModel($data['type'], $data['id']) ?? abort(422);
+        return JsonApiBinder::get()->find($data['type'], $data['id']) ?? abort(422);
     }
 
     /**

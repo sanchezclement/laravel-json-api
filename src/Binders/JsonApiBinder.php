@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace JsonApi\Binders;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Resources\Json\JsonResource;
 use JsonApi\Resources\ResourceObject;
 
 /**
@@ -52,58 +51,6 @@ class JsonApiBinder
     }
 
     /**
-     * @param string $name
-     * @return bool
-     */
-    public function has(string $name): bool
-    {
-        return array_key_exists($name, $this->config['resources']);
-    }
-
-    /**
-     * @param $object
-     * @param $id
-     * @return Model
-     */
-    public function findOrFail($object, $id): Model
-    {
-        if (is_array($id)) {
-            return $this->getModelClass($object)::findOrFail($id);
-        } else {
-            $model = $this->findModel($object, $id);
-
-            if (is_null($model)) {
-                abort(404, "Model not found");
-            }
-
-            return $model;
-        }
-    }
-
-    /**
-     * @param $object
-     * @param $id
-     * @return Model
-     */
-    public function findModel($object, $id): ?Model
-    {
-        if (is_array($id)) {
-            return $this->getModelClass($object)::find($id);
-        } else {
-            $modelClass = $this->getModelClass($object);
-            $model = $modelClass::make();
-
-            if (method_exists($model, 'resolveRouteBinding')) {
-                $model = call_user_func([$model, 'resolveRouteBinding'], [$id]);
-            } else {
-                $model = $modelClass::find($id);
-            }
-
-            return $model;
-        }
-    }
-
-    /**
      * @param mixed $object
      * @return Model
      */
@@ -113,31 +60,16 @@ class JsonApiBinder
     }
 
     /**
-     * @param mixed $object
-     * @return ResourceObject|string
-     */
-    public function getResourceClass($object): string
-    {
-        return $this->getData($object)['resource'];
-    }
-
-    /**
-     * @param mixed $object
-     * @param array $parameters
-     * @return ResourceObject
-     */
-    public function makeResource($object, ...$parameters): ResourceObject
-    {
-        return $this->getResourceClass($object)::make($object, ...$parameters);
-    }
-
-    /**
-     * @param Model $model
+     * @param $name
      * @return array
      */
-    public function getIdentifier(Model $model): array
+    private function getData($name): array
     {
-        return ['type' => $this->getName($model), 'id' => $model->getKey()];
+        if (!is_string($name) || !array_key_exists($name, $this->config['resources'])) {
+            $name = $this->getName($name);
+        }
+
+        return $this->config['resources'][$name];
     }
 
     /**
@@ -165,6 +97,81 @@ class JsonApiBinder
     }
 
     /**
+     * @param string $name
+     * @return bool
+     */
+    public function has(string $name): bool
+    {
+        return array_key_exists($name, $this->config['resources']);
+    }
+
+    /**
+     * @param $object
+     * @param $id
+     * @return Model
+     */
+    public function findOrFail($object, $id): Model
+    {
+        if (is_array($id)) {
+            return $this->getModelClass($object)::findOrFail($id);
+        } else {
+            $model = $this->find($object, $id);
+
+            if (is_null($model)) {
+                abort(404, "Model not found");
+            }
+
+            return $model;
+        }
+    }
+
+    /**
+     * @param $object
+     * @param $id
+     * @return Model
+     */
+    public function find($object, $id): ?Model
+    {
+        $modelClass = $this->getModelClass($object);
+
+        if (is_array($id)) {
+            return $modelClass::find($id);
+        } else {
+            $model = new $modelClass();
+
+            return call_user_func([$model, 'resolveRouteBinding'], [$id]);
+        }
+    }
+
+    /**
+     * @param mixed $object
+     * @param array $parameters
+     * @return ResourceObject
+     */
+    public function makeResource($object, ...$parameters): ResourceObject
+    {
+        return $this->getResourceClass($object)::make($object, ...$parameters);
+    }
+
+    /**
+     * @param mixed $object
+     * @return ResourceObject|string
+     */
+    public function getResourceClass($object): string
+    {
+        return $this->getData($object)['resource'];
+    }
+
+    /**
+     * @param Model $model
+     * @return array
+     */
+    public function getIdentifier(Model $model): array
+    {
+        return ['type' => $this->getName($model), 'id' => $model->getKey()];
+    }
+
+    /**
      * @param $object
      * @return bool
      */
@@ -179,18 +186,5 @@ class JsonApiBinder
     public function getResources(): array
     {
         return $this->config['resources'];
-    }
-
-    /**
-     * @param $name
-     * @return array
-     */
-    private function getData($name): array
-    {
-        if (!is_string($name) || !array_key_exists($name, $this->config['resources'])) {
-            $name = $this->getName($name);
-        }
-
-        return $this->config['resources'][$name];
     }
 }

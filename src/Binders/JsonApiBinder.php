@@ -139,7 +139,7 @@ class JsonApiBinder
         } else {
             $model = new $modelClass();
 
-            return call_user_func([$model, 'resolveRouteBinding'], [$id]);
+            return call_user_func([$model, 'resolveRouteBinding'], $id);
         }
     }
 

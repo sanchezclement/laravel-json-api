@@ -61,7 +61,7 @@ class RelationshipObject extends JsonResource
      * @param Request $request
      * @return array
      */
-    public final function toArray($request)
+    final public function toArray($request)
     {
         if ($this->relation instanceof HasOne || $this->relation instanceof BelongsTo) {
             return $this->serializeToOneRelationship();
@@ -78,8 +78,8 @@ class RelationshipObject extends JsonResource
         return [
             'data' => $this->related ? ResourceIdentifier::make($this->related) : null,
             'links' => [
-                'self' => route(JsonApiBinder::get()->getName($this->model) . ".id.relationships", [
-                    $this->model->getKey(), $this->relation
+                'self' => route('resource.id.relationships.relationship', [
+                    JsonApiBinder::get()->getName($this->model), $this->model->getKey(), $this->relationName
                 ]),
                 'related' => $this->when($this->related, function () {
                     return route(JsonApiBinder::get()->getName($this->related) . ".id", [$this->related->getKey()]);
@@ -94,7 +94,9 @@ class RelationshipObject extends JsonResource
      */
     private function serializeToManyRelationship(): array
     {
-        $path = route(JsonApiBinder::get()->getName($this->model) . ".id.relationships", [$this->model->getKey(), $this->relationName]);
+        $path = route('resource.id.relationships.relationship', [
+            JsonApiBinder::get()->getName($this->model), $this->model->getKey(), $this->relationName
+        ]);
 
         $pagination = Pagination::make($path)->process($this->relation->getQuery());
 

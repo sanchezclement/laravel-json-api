@@ -39,12 +39,12 @@ abstract class ResourceObject extends JsonResource
      */
     public static function make(...$parameters)
     {
-        $model = $parameters[0] ?? null;
+        $model = array_shift($parameters);
 
         if (self::class === static::class) {
             return JsonApiBinder::get()->makeResource($model, ...$parameters);
         } else {
-            return new static(...$parameters);
+            return new static($model, ...$parameters);
         }
     }
 
@@ -54,7 +54,7 @@ abstract class ResourceObject extends JsonResource
      * @param Request $request
      * @return array
      */
-    public final function toArray($request)
+    final public function toArray($request)
     {
         return [
             'type' => JsonApiBinder::get()->getName($this->resource),
@@ -76,7 +76,7 @@ abstract class ResourceObject extends JsonResource
     {
         return [
             'meta' => config('json-api.meta'),
-            'included' => IncludedObject::make($this->resource, $this->inclusion),
+            'included' => IncludedObject::make($this->resource, $this->inclusion)->toArray(),
         ];
     }
 
@@ -84,12 +84,12 @@ abstract class ResourceObject extends JsonResource
      * @param Request $request
      * @return array
      */
-    protected abstract function toAttributes(Request $request): array;
+    abstract protected function toAttributes(Request $request): array;
 
     /**
      * @return Collection
      */
-    private final function toRelationships()
+    final private function toRelationships()
     {
         return $this->inclusion->mapWithKeys(function (string $relationName) {
             return [$relationName => RelationshipObject::make($this->resource, $relationName)];
@@ -99,7 +99,7 @@ abstract class ResourceObject extends JsonResource
     /**
      * @return array
      */
-    private final function toLinks(): array
+    final private function toLinks(): array
     {
         return [
             'self' => route(JsonApiBinder::get()->getName($this->resource) . ".id", $this->resource->getKey())

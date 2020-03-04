@@ -5,6 +5,7 @@ namespace JsonApi\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use JsonApi\Binders\JsonApiBinder;
 
 /**
  * Class ResourceIdentifier
@@ -18,10 +19,10 @@ class ResourceIdentifier extends JsonResource
      * @param Request $request
      * @return array
      */
-    public final function toArray($request)
+    final public function toArray($request)
     {
         return [
-            'type' => $this->resource->getName(),
+            'type' => JsonApiBinder::get()->getName($this->resource),
             'id' => $this->resource->getKey(),
         ];
     }

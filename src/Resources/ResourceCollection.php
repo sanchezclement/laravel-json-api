@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace JsonApi\Resources;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection as JsonResourceCollection;
 use Illuminate\Http\Resources\MissingValue;
 use Illuminate\Pagination\AbstractPaginator;
@@ -78,7 +79,9 @@ class ResourceCollection extends JsonResourceCollection
                 $this->merge(config('json-api.meta', [])),
                 $this->merge($this->pagination->getMeta())
             ],
-            'included' => IncludedObject::make($this->collection, $this->inclusion)->toArray()
+            'included' => IncludedObject::make($this->collection->map(
+                fn(JsonResource $resource) => $resource->resource
+            ), $this->inclusion)->toArray()
         ];
     }
 

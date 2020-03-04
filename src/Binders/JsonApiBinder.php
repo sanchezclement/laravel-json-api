@@ -14,7 +14,7 @@ use JsonApi\Resources\ResourceObject;
 class JsonApiBinder
 {
     /**
-     * @var $this
+     * @var JsonApiBinder $this
      */
     private static self $instance;
 
@@ -67,7 +67,17 @@ class JsonApiBinder
      */
     public function findOrFail($object, $id): Model
     {
-        return $this->getModelClass($object)::findOrFail($id);
+        if (is_array($id)) {
+            return $this->getModelClass($object)::findOrFail($id);
+        } else {
+            $model = $this->findModel($object, $id);
+
+            if (is_null($model)) {
+                abort(404, "Model not found");
+            }
+
+            return $model;
+        }
     }
 
     /**
@@ -77,7 +87,20 @@ class JsonApiBinder
      */
     public function findModel($object, $id): ?Model
     {
-        return $this->getModelClass($object)::find($id);
+        if (is_array($id)) {
+            return $this->getModelClass($object)::find($id);
+        } else {
+            $modelClass = $this->getModelClass($object);
+            $model = $modelClass::make();
+
+            if (method_exists($model, 'resolveRouteBinding')) {
+                $model = call_user_func([$model, 'resolveRouteBinding'], [$id]);
+            } else {
+                $model = $modelClass::find($id);
+            }
+
+            return $model;
+        }
     }
 
     /**

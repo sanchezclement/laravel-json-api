@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace JsonApi\Binders;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use JsonApi\Resources\ResourceObject;
 
@@ -106,40 +107,74 @@ class JsonApiBinder
     }
 
     /**
-     * @param $object
+     * @param $type
      * @param $id
-     * @return Model
+     * @return Collection|Model|null
      */
-    public function findOrFail($object, $id): Model
+    public function findOrNull($type, $id = null)
     {
-        if (is_array($id)) {
-            return $this->getModelClass($object)::findOrFail($id);
+        return $this->findOr($type, $id);
+    }
+
+    /**
+     * @param $type
+     * @param $id
+     * @param null $default
+     * @return Collection|Model|null
+     */
+    public function findOr($type, $id = null, $default = null)
+    {
+        $identifiers = $this->parseToIdentifier($type, $id);
+        $models = $this->find($identifiers);
+
+        if ($identifiers->has('id')) {
+            $modelsNotFound = is_null($models);
         } else {
-            $model = $this->find($object, $id);
+            $modelsNotFound = $models->count() !== $identifiers->count();
+        }
 
-            if (is_null($model)) {
-                abort(404, "Model not found");
-            }
+        return $modelsNotFound ? is_callable($default) ? $default() : $default : $models;
+    }
 
-            return $model;
+    /**
+     * @param $type
+     * @param null $id
+     * @return \Illuminate\Support\Collection
+     */
+    final private function parseToIdentifier($type, $id = null)
+    {
+        if (!is_null($id)) {
+            return collect(['type' => $type, 'id' => $id]);
+        } else {
+            return is_array($type) ? collect($type) : $type;
         }
     }
 
     /**
-     * @param $object
+     * @param $type
      * @param $id
-     * @return Model
+     * @return Model|Collection
      */
-    public function find($object, $id): ?Model
+    public function find($type, $id = null)
     {
-        $modelClass = $this->getModelClass($object);
+        return $this->findFromIdentifiers($this->parseToIdentifier($type, $id));
+    }
 
-        if (is_array($id)) {
-            return $modelClass::find($id);
+    /**
+     * @param \Illuminate\Support\Collection $identifiers
+     * @return Collection|Model
+     */
+    private function findFromIdentifiers(\Illuminate\Support\Collection $identifiers)
+    {
+        if ($identifiers->has('id')) {
+            return $this->getModelClass($identifiers->get('type'))::find($identifiers->get('id'));
         } else {
-            $model = new $modelClass();
-
-            return call_user_func([$model, 'resolveRouteBinding'], $id);
+            return new Collection(
+                collect($identifiers)
+                    ->mapToGroups(fn(array $identifier) => [$identifier['type'] => $identifier['id']])
+                    ->each(fn(array $ids, string $type) => $this->getModelClass($type)::find($ids))
+                    ->collapse()->all()
+            );
         }
     }
 

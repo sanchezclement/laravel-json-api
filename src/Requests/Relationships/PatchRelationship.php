@@ -32,7 +32,7 @@ class PatchRelationship extends RelationshipRequest
         $this->rules([
             'data' => 'required|array|nullable',
             'data.type' => 'required_with:data|string',
-            'data.id' => 'required_with:data|string',
+            'data.id' => 'required_with:data',
         ]);
     }
 
@@ -42,7 +42,7 @@ class PatchRelationship extends RelationshipRequest
             'data' => 'required|array|nullable',
             'data.*' => 'required_with:data|array',
             'data.*.type' => 'required_with:data.*|string',
-            'data.*.id' => 'required_with:data|.*|string',
+            'data.*.id' => 'required_with:data.*',
         ]);
     }
 }

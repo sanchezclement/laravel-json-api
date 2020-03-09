@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace JsonApi\Requests\Relationships;
 
-use Illuminate\Auth\Access\Gate;
+use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,7 +21,7 @@ abstract class RelationshipRequest extends ResourceRequest
     /**
      * @var BelongsTo|BelongsToMany
      */
-    private BelongsTo $relation;
+    private $relation;
 
     /**
      * @var Collection|Model
@@ -55,7 +55,7 @@ abstract class RelationshipRequest extends ResourceRequest
     final private function initializeValidation(): void
     {
         $model = $this->getModel();
-        $relationName = $this->route('relationship');
+        $relationName = $this->route('relation');
 
         if (!method_exists($model, $relationName)) {
             $this->relationshipNotFound();
@@ -83,7 +83,7 @@ abstract class RelationshipRequest extends ResourceRequest
 
     final private function finalizeValidation()
     {
-        $this->related = JsonApiBinder::get()->findOrNull($this->validated());
+        $this->related = JsonApiBinder::get()->findOrNull($this->validated()['data']);
 
         if (is_null($this->related)) {
             $this->relatedNotFound();

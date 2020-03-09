@@ -172,7 +172,7 @@ class JsonApiBinder
             return new Collection(
                 collect($identifiers)
                     ->mapToGroups(fn(array $identifier) => [$identifier['type'] => $identifier['id']])
-                    ->each(fn(array $ids, string $type) => $this->getModelClass($type)::find($ids))
+                    ->map(fn($ids, string $type) => $this->getModelClass($type)::find($ids))
                     ->collapse()->all()
             );
         }

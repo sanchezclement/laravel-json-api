@@ -66,13 +66,13 @@ class IncludedObject
     /**
      * @return Collection
      */
-    private final function buildInclusionMap(): Collection
+    final private function buildInclusionMap(): Collection
     {
 
         $this->param->each(function (string $relation) {
             $this->map[$relation] = [];
 
-            $this->resource->each(function (JsonResource $model) use ($relation) {
+            $this->resource->each(function (Model $model) use ($relation) {
                 $this->addIncluded($model->getRelation($relation));
             });
         });
@@ -83,7 +83,7 @@ class IncludedObject
     /**
      * @param $resource
      */
-    private final function addIncluded($resource)
+    final private function addIncluded($resource)
     {
         if ($resource instanceof Model) {
             $this->addIncludedModel($resource);
@@ -97,7 +97,7 @@ class IncludedObject
     /**
      * @param Model $model
      */
-    private final function addIncludedModel(Model $model)
+    final private function addIncludedModel(Model $model)
     {
         if (!array_key_exists(JsonApiBinder::get()->getName($model), $this->map)) {
             $this->map[JsonApiBinder::get()->getName($model)] = [];
@@ -109,7 +109,7 @@ class IncludedObject
     /**
      * @param Collection $collection
      */
-    private final function addIncludedCollection(Collection $collection)
+    final private function addIncludedCollection(Collection $collection)
     {
         foreach ($collection as $value) {
             $this->addIncludedModel($value);

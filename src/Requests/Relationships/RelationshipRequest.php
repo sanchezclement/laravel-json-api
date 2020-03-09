@@ -48,8 +48,8 @@ abstract class RelationshipRequest extends ResourceRequest
     {
         parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
 
-        $this->beforeValidation(fn () => $this->initializeValidation());
-        $this->afterValidation(fn () => $this->finalizeValidation());
+        $this->beforeValidation(fn() => $this->initializeValidation());
+        $this->afterValidation(fn() => $this->finalizeValidation());
     }
 
     final private function initializeValidation(): void
@@ -70,27 +70,16 @@ abstract class RelationshipRequest extends ResourceRequest
         $this->validateRelation($this->relation);
     }
 
+    final protected function relationshipNotFound()
+    {
+        abort(404, "Relationship not found");
+    }
+
     /**
      * @param Relation $relation
      * @return mixed
      */
     abstract protected function validateRelation(Relation $relation);
-
-    /**
-     * @return BelongsTo|BelongsToMany
-     */
-    final public function getRelation()
-    {
-        return $this->relation;
-    }
-
-    /**
-     * @return Collection|Model
-     */
-    final public function getRelated()
-    {
-        return $this->related;
-    }
 
     final private function finalizeValidation()
     {
@@ -103,30 +92,48 @@ abstract class RelationshipRequest extends ResourceRequest
         $this->authorizeRelated();
     }
 
-    final private function authorizeRelated(): void
-    {
-        $gate = app(Gate::class);
-
-        if ($this->related instanceof Collection) {
-            $this->related->each(fn (Model $model) => $gate->authorize('update', $model));
-        } else {
-            $gate->authorize('update', $this->getRelated());
-        }
-    }
-
     final protected function relatedNotFound()
     {
         abort(422, "One of the related models have not been found.");
     }
 
+    final private function authorizeRelated(): void
+    {
+        $gate = app(Gate::class);
+
+        if ($this->related instanceof Collection) {
+            $this->related->each(fn(Model $model) => $gate->authorize('update', $model));
+        } else {
+            $gate->authorize('update', $this->getRelated());
+        }
+    }
+
+    /**
+     * @return Collection|Model
+     */
+    final public function getRelated()
+    {
+        return $this->related;
+    }
+
+    /**
+     * @return BelongsTo|BelongsToMany
+     */
+    final public function getRelation()
+    {
+        return $this->relation;
+    }
 
     final protected function methodNotAllowed()
     {
         abort(405, "This method is not allowed");
     }
 
-    final protected function relationshipNotFound()
+    /**
+     * @return string
+     */
+    final protected function getPolicy(): string
     {
-        abort(404, "Relationship not found");
+        return 'update';
     }
 }

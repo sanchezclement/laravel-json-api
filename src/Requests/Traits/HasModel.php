@@ -32,7 +32,7 @@ trait HasModel
     /**
      * @return Model
      */
-    public final function getModel(): Model
+    final public function getModel(): Model
     {
         return $this->model;
     }
@@ -40,7 +40,7 @@ trait HasModel
     /**
      * @return bool
      */
-    protected final function passesAuthorization()
+    final protected function passesAuthorization()
     {
         return $this->authorize(app(Gate::class), $this->model) ? true : false;
     }
@@ -65,7 +65,7 @@ trait HasModel
     }
 
 
-    protected final function failedAuthorization()
+    final protected function failedAuthorization()
     {
         abort(403, "The main resource action is not authorized");
     }

@@ -50,6 +50,7 @@ class RelationshipObject extends JsonResource
         $this->relationName = $relationName;
         $this->relation = $model->{$relationName}();
 
+        $this->model->loadMissing($relationName);
         $this->related = $this->model->getRelation($relationName);
 
         parent::__construct($model);

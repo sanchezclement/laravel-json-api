@@ -38,7 +38,7 @@ class IncludedObject
      */
     public function __construct($resource, Inclusion $param)
     {
-        $this->resource = $resource instanceof Model ? collect($resource) : $resource;
+        $this->resource = $resource instanceof Model ? collect([$resource]) : $resource;
         $this->param = $param;
         $this->map = [];
     }

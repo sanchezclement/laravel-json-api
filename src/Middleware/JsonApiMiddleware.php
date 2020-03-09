@@ -28,7 +28,7 @@ class JsonApiMiddleware
             if (is_null($id = $request->route('id'))) {
                 $model = JsonApiBinder::get()->makeModel($name);
             } else {
-                $model = JsonApiBinder::get()->findOrFail($name, $id);
+                $model = JsonApiBinder::get()->findOr($name, $id, fn () => abort(404, "Model not found"));
             }
 
             $request->route()->setParameter('id', $model);

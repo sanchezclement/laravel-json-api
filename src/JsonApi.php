@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace JsonApi;
 
 use Illuminate\Support\Facades\Route;
+use JsonApi\Middleware\JsonApiMiddleware;
 
 /**
  * Class JsonApi
@@ -15,6 +16,7 @@ class JsonApi
     {
         Route::prefix('{resource}/{id}/relationships/{relation}')
             ->name('resource.id.relationships.relationship')
+            ->middleware(JsonApiMiddleware::class)
             ->group(function () {
                 Route::post('', 'JsonApi\Controllers\RelationshipsController@store');
                 Route::patch('', 'JsonApi\Controllers\RelationshipsController@patch');

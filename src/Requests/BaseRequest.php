@@ -57,7 +57,7 @@ class BaseRequest extends FormRequest implements IHasModel
      * @param callable $callback
      * @return void
      */
-    public final function beforeValidation(callable $callback): void
+    final public function beforeValidation(callable $callback): void
     {
         $this->beforeValidation[] = $callback;
     }
@@ -66,7 +66,7 @@ class BaseRequest extends FormRequest implements IHasModel
      * @param callable $callback
      * @return void
      */
-    public final function afterValidation(callable $callback): void
+    final public function afterValidation(callable $callback): void
     {
         $this->afterValidation[] = $callback;
     }
@@ -75,7 +75,7 @@ class BaseRequest extends FormRequest implements IHasModel
      * @param array $rules
      * @return array
      */
-    public final function rules(?array $rules = null): array
+    final public function rules(?array $rules = null): array
     {
         if ($rules) {
             $this->rules = array_merge($this->rules, $rules);
@@ -84,7 +84,7 @@ class BaseRequest extends FormRequest implements IHasModel
         return $this->rules;
     }
 
-    protected final function prepareForValidation()
+    final protected function prepareForValidation()
     {
         foreach ($this->beforeValidation as $callback) {
             $callback();
@@ -96,7 +96,7 @@ class BaseRequest extends FormRequest implements IHasModel
      *
      * @return void
      */
-    protected final function passedValidation()
+    final protected function passedValidation()
     {
         foreach ($this->afterValidation as $callback) {
             $callback();

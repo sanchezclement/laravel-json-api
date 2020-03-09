@@ -167,7 +167,9 @@ class JsonApiBinder
     private function findFromIdentifiers(\Illuminate\Support\Collection $identifiers)
     {
         if ($identifiers->has('id')) {
-            return $this->getModelClass($identifiers->get('type'))::find($identifiers->get('id'));
+            $model = $this->makeModel($identifiers['type']);
+
+            return $model->resolveRouteBinding($identifiers['id']);
         } else {
             return new Collection(
                 collect($identifiers)

@@ -25,16 +25,19 @@ trait HasPagination
         $this->rules(['page.number' => 'integer|min:0', 'page.size' => 'integer|min:1|max:50',]);
 
         $this->afterValidation(function () {
-            $this->pagination = Pagination::make(
-                $this->path(), $this->input('page.number'), $this->input('page.size')
-            );
+            $data = $this->validated()['page'] ?? [];
+
+            $pageNumber = array_key_exists('number', $data) ? intval($data['number']) : null;
+            $pageSize = array_key_exists('size', $data) ? intval($data['size']) : null;
+
+            $this->pagination = Pagination::make($this->path(), $pageNumber, $pageSize);
         });
     }
 
     /**
      * @return Pagination
      */
-    public final function getPagination(): Pagination
+    final public function getPagination(): Pagination
     {
         return $this->pagination;
     }
@@ -42,7 +45,7 @@ trait HasPagination
     /**
      * @param Builder $builder
      */
-    public final function processPagination(Builder $builder)
+    final public function processPagination(Builder $builder)
     {
         $this->pagination->process($builder);
     }

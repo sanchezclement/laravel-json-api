@@ -103,8 +103,8 @@ class RelationshipObject extends JsonResource
 
         return [
             'data' => $this->related ? ResourceIdentifier::collection($this->related) : [],
-            'links' => $pagination->getMeta(),
-            'meta' => $pagination->getLinks(),
+            'links' => $pagination->getLinks(),
+            'meta' => $pagination->getMeta(),
         ];
     }
 }

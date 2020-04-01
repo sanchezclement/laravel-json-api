@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace JsonApi\Requests\Traits;
 
+use Illuminate\Support\Arr;
 use JsonApi\Requests\BodyRequest;
 
 /**
@@ -26,7 +27,7 @@ trait HasAttributes
      */
     public function getAttributes()
     {
-        return $this->validated()['data']['attributes'];
+        return Arr::get($this->validated(), 'data.attributes', []);
     }
 
     /**

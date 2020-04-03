@@ -101,7 +101,9 @@ abstract class ResourceObject extends JsonResource
     {
         $gate = app(Gate::class);
 
-        return array_map(fn(string $policy) => $gate->check($policy, $this->resource), $policyNames);
+        return collect($policyNames)->mapWithKeys(
+            fn(string $policy) => [$policy => $gate->check($policy, $this->resource)]
+        )->all();
     }
 
     /**

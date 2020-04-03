@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace JsonApi\Resources;
 
+use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
@@ -62,21 +63,7 @@ abstract class ResourceObject extends JsonResource
             'attributes' => $this->toAttributes($request),
             'relationships' => $this->toRelationships(),
             'links' => $this->toLinks(),
-            'meta' => $this->toMeta($request),
-        ];
-    }
-
-    /**
-     * Get any additional data that should be returned with the resource array.
-     *
-     * @param Request $request
-     * @return array
-     */
-    public function with($request)
-    {
-        return [
-            'meta' => config('json-api.meta'),
-            'included' => IncludedObject::make($this->resource, $this->inclusion)->toArray(),
+            'meta' => $this->getPolicies($this->getPolicyNames()),
         ];
     }
 
@@ -107,11 +94,35 @@ abstract class ResourceObject extends JsonResource
     }
 
     /**
+     * @param array $policyNames
+     * @return array
+     */
+    final private function getPolicies(array $policyNames): array
+    {
+        $gate = app(Gate::class);
+
+        return array_map(fn(string $policy) => $gate->check($policy, $this->resource), $policyNames);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getPolicyNames(): array
+    {
+        return [];
+    }
+
+    /**
+     * Get any additional data that should be returned with the resource array.
+     *
      * @param Request $request
      * @return array
      */
-    protected function toMeta(Request $request): array
+    public function with($request)
     {
-        return [];
+        return [
+            'meta' => config('json-api.meta'),
+            'included' => IncludedObject::make($this->resource, $this->inclusion)->toArray(),
+        ];
     }
 }

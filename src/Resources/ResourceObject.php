@@ -62,7 +62,7 @@ abstract class ResourceObject extends JsonResource
             'attributes' => $this->toAttributes($request),
             'relationships' => $this->toRelationships(),
             'links' => $this->toLinks(),
-            'meta' => [],
+            'meta' => $this->toMeta(),
         ];
     }
 
@@ -104,5 +104,13 @@ abstract class ResourceObject extends JsonResource
         return [
             'self' => route(JsonApiBinder::get()->getName($this->resource) . ".id", $this->resource->getKey())
         ];
+    }
+
+    /**
+     * @return array
+     */
+    final private function toMeta(): array
+    {
+        return [];
     }
 }

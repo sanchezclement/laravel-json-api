@@ -62,7 +62,7 @@ abstract class ResourceObject extends JsonResource
             'attributes' => $this->toAttributes($request),
             'relationships' => $this->toRelationships(),
             'links' => $this->toLinks(),
-            'meta' => $this->toMeta(),
+            'meta' => $this->toMeta($request),
         ];
     }
 
@@ -107,9 +107,10 @@ abstract class ResourceObject extends JsonResource
     }
 
     /**
+     * @param Request $request
      * @return array
      */
-    final private function toMeta(): array
+    protected function toMeta(Request $request): array
     {
         return [];
     }

@@ -87,10 +87,8 @@ class IncludedObject
     {
         if ($resource instanceof Model) {
             $this->addIncludedModel($resource);
-        } else if ($resource instanceof Collection) {
+        } elseif ($resource instanceof Collection) {
             $this->addIncludedCollection($resource);
-        } else {
-            abort(500);
         }
     }
 

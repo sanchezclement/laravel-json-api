@@ -68,7 +68,6 @@ class IncludedObject
      */
     final private function buildInclusionMap(): Collection
     {
-
         $this->param->each(function (string $relation) {
             $this->map[$relation] = [];
 

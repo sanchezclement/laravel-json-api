@@ -98,7 +98,8 @@ class Pagination
      */
     public function process(Builder $builder): self
     {
-        $this->size = $builder->count();
+        $this->totalSize = $builder->count();
+        $this->totalPage = intval($this->totalSize / $this->pageSize) + 1;
 
         $builder->limit($this->pageSize);
 
@@ -106,8 +107,7 @@ class Pagination
             $builder->offset(($this->pageNumber - 1) * $this->pageSize);
         }
 
-        $this->totalSize = $builder->count();
-        $this->totalPage = intval($this->totalSize / $this->pageSize) + 1;
+        $this->size = $builder->count();
 
         return $this;
     }

@@ -22,7 +22,7 @@ trait HasPagination
      */
     public function initializePagination(): void
     {
-        $this->rules(['page.number' => 'integer|min:0', 'page.size' => 'integer|min:1|max:50',]);
+        $this->rules(['page.number' => 'integer|min:0', 'page.size' => 'integer|min:1|max:500',]);
 
         $this->afterValidation(function () {
             $data = $this->validated()['page'] ?? [];

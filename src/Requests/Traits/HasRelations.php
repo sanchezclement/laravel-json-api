@@ -72,7 +72,7 @@ trait HasRelations
     final public function getToManyRelation(): Collection
     {
         return $this->relations->filter(
-            fn (RelationHandler $handler) => $handler->getOperator() instanceof ToOneRelationOperator
+            fn (RelationHandler $handler) => $handler->getOperator() instanceof ToManyRelationOperator
         );
     }
 
@@ -135,7 +135,7 @@ trait HasRelations
 
         if ($relation instanceof BelongsTo) {
             return new ToOneRelationOperator($policy);
-        } elseif ($name instanceof BelongsToMany) {
+        } elseif ($relation instanceof BelongsToMany) {
             return new ToManyRelationOperator($policy);
         } else {
             throw new AuthorizationException();

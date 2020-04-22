@@ -32,7 +32,7 @@ trait HasFilter
     /**
      * @return Filter
      */
-    public final function getFilter(): Filter
+    final public function getFilter(): Filter
     {
         return $this->filter;
     }
@@ -40,7 +40,7 @@ trait HasFilter
     /**
      * @param Builder $builder
      */
-    public final function processFilter(Builder $builder)
+    final public function processFilter(Builder $builder)
     {
         $this->filter->process($builder);
     }

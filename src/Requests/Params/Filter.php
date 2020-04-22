@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
  */
 class Filter
 {
-    const OPERATORS = [
+    public const OPERATORS = [
         '=', '<', '>', '<=', '>=', '<>', '!=', '<=>',
         'like', 'like binary', 'not like', 'ilike',
         '&', '|', '^', '<<', '>>',
@@ -78,11 +78,11 @@ class Filter
                 $builder->where(function (Builder $builder) use ($value) {
                     $this->parseParam($builder, $value);
                 });
-            } else if ($this->isOperator($key)) {
+            } elseif ($this->isOperator($key)) {
                 $this->parseParamWithOperator($key, $builder, $value);
-            } else if ($this->isBoolean($key)) {
+            } elseif ($this->isBoolean($key)) {
                 $this->parseParamWithBoolean($key, $builder, $value);
-            } else if ($this->hasChildField($value)) {
+            } elseif ($this->hasChildField($value)) {
                 $this->parseParamWithRelation($key, $builder, $value);
             } else {
                 $this->parseParamWithField($key, $builder, $value);

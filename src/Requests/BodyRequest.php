@@ -52,8 +52,6 @@ class BodyRequest extends ResourceRequest implements IHasRelations
             'data.relationships' => 'array',
             'data.relationships.*' => 'array',
             'data.relationships.*.data' => 'required_with:data.relationships.*|array',
-            'data.relationships.*.data.id' => 'required_with:data.relationships.*',
-            'data.relationships.*.data.type' => 'required_with:data.relationships.*'
         ];
 
         foreach ($this->attributesRules() as $key => $attribute) {
